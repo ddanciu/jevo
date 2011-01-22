@@ -13,6 +13,7 @@
   
     <modules>
         <module>jevo-core</module>
+        <module>finev-core</module>
     </modules>
 
     <properties>
