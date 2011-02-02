@@ -13,8 +13,8 @@ import ro.ddanciu.jevo.core.Individual;
  *
  * @author dan
  */
-public interface CrossoverOperator {
+public interface CrossoverOperator<I> {
 
-    Set<Individual<?>> operate(Iterator<Individual<?>> it);
+    Set<Individual<I>> operate(Iterator<Individual<I>> it);
 
 }

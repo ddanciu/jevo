@@ -16,19 +16,19 @@ import ro.ddanciu.jevo.core.selectors.Selector;
  *
  * @author dan
  */
-public class EvoAlgorithm {
+public class EvoAlgorithm<I> {
 
     private int maxGenerations;
 
-    private Selector selector;
+    private Selector<I> selector;
 
-    private MutationOperator mutationOperator;
+    private MutationOperator<I> mutationOperator;
 
-    private CrossoverOperator crossoverOperator;
+    private CrossoverOperator<I> crossoverOperator;
 
-    private Stopper stopper;
+    private Stopper<I> stopper;
 
-    private Evaluator evaluator;
+    private Evaluator<Integer, I> evaluator;
 
     /**
      * repeat
@@ -39,12 +39,12 @@ public class EvoAlgorithm {
      * 
      * @return
      */
-    public Individual run(Set<Individual<?>> intialPopulation) {
+    public Individual<I> run(Set<Individual<I>> intialPopulation) {
         int generation = 0;
-        Set<Individual<?>> population = intialPopulation;
+        Set<Individual<I>> population = intialPopulation;
         do {
 
-            Set<Individual<?>> parents = select(population);
+            Set<Individual<I>> parents = select(population);
             population = reproduction(parents);
 
         } while (!stop(population) && generation++ < maxGenerations);
@@ -52,24 +52,24 @@ public class EvoAlgorithm {
         return best(population);
     }
     
-    private Set<Individual<?>> select(Set<Individual<?>> population) {
+    private Set<Individual<I>> select(Set<Individual<I>> population) {
         return selector.choose(population);
     }
 
-    private Set<Individual<?>> reproduction(Set<Individual<?>> parents) {
-        Set<Individual<?>> population = crossover(parents);
+    private Set<Individual<I>> reproduction(Set<Individual<I>> parents) {
+        Set<Individual<I>> population = crossover(parents);
         population = mutation(population);
 
         return population;
     }
 
-    private Set<Individual<?>> crossover(Set<Individual<?>> parents) {
+    private Set<Individual<I>> crossover(Set<Individual<I>> parents) {
         
-        Set<Individual<?>> next = new HashSet<Individual<?>>(parents);
+        Set<Individual<I>> next = new HashSet<Individual<I>>(parents);
         
-        Iterator<Individual<?>> it = parents.iterator();
+        Iterator<Individual<I>> it = parents.iterator();
         while (it.hasNext()) {
-            Set<Individual<?>> offsprings = crossoverOperator.operate(it);
+            Set<Individual<I>> offsprings = crossoverOperator.operate(it);
             next.addAll(offsprings);
         }
 
@@ -77,23 +77,23 @@ public class EvoAlgorithm {
 
     }
 
-    private Set<Individual<?>> mutation(Set<Individual<?>> population) {
-        for (Individual individual : population) {
+    private Set<Individual<I>> mutation(Set<Individual<I>> population) {
+        for (Individual<I> individual : population) {
             mutationOperator.operate(individual);
         }
 
         return population;
     }
 
-    private boolean stop(Set<Individual<?>> population) {
+    private boolean stop(Set<Individual<I>> population) {
         return stopper.stop(population);
     }
 
-    private Individual best(Set<Individual<?>> population) {
-        Comparable maxFitness = null;
-        Individual best = null;
-        for (Individual individual : population) {
-            Comparable fitness = evaluator.evaluate(individual);
+    private Individual<I> best(Set<Individual<I>> population) {
+        Integer maxFitness = null;
+        Individual<I> best = null;
+        for (Individual<I> individual : population) {
+            Integer fitness = evaluator.evaluate(individual);
             if (maxFitness == null || fitness.compareTo(maxFitness) > 0) {
                 maxFitness = fitness;
                 best = individual;
@@ -110,27 +110,23 @@ public class EvoAlgorithm {
         this.maxGenerations = maxGenerations;
     }
 
-    public void setCrossoverOperator(CrossoverOperator crossoverOperator) {
+    public void setCrossoverOperator(CrossoverOperator<I> crossoverOperator) {
         this.crossoverOperator = crossoverOperator;
     }
 
-    public void setMutationOperator(MutationOperator mutationOperator) {
+    public void setMutationOperator(MutationOperator<I> mutationOperator) {
         this.mutationOperator = mutationOperator;
     }
 
-    public void setSelector(Selector selector) {
+    public void setSelector(Selector<I> selector) {
         this.selector = selector;
     }
 
-    public void setStopper(Stopper stopper) {
+    public void setStopper(Stopper<I> stopper) {
         this.stopper = stopper;
     }
 
-    public Evaluator getEvaluator() {
-        return evaluator;
-    }
-
-    public void setEvaluator(Evaluator evaluator) {
+    public void setEvaluator(Evaluator<Integer, I> evaluator) {
         this.evaluator = evaluator;
     }
 

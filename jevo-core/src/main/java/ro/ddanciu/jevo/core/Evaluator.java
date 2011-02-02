@@ -13,13 +13,13 @@ import java.util.UUID;
  *
  * @author dan
  */
-public final class Evaluator<T extends Comparable> {
+public final class Evaluator<T extends Comparable<?>, K> {
     
     private final Map<UUID, T> cache = new HashMap<UUID, T>();
 
-    private FitnessFunction<T> fitnessFunction;
+    private FitnessFunction<T, K> fitnessFunction;
 
-    public T evaluate(Individual individual) {
+    public T evaluate(Individual<K> individual) {
         T fitness;
         if (cache.containsKey(individual.getId())) {
             fitness = cache.get(individual.getId());
@@ -31,11 +31,11 @@ public final class Evaluator<T extends Comparable> {
         return fitness;
     }
 
-    public FitnessFunction<T> getFitnessFunction() {
+    public FitnessFunction<T, K> getFitnessFunction() {
         return fitnessFunction;
     }
 
-    public void setFitnessFunction(FitnessFunction<T> fitnessFunction) {
+    public void setFitnessFunction(FitnessFunction<T, K> fitnessFunction) {
         this.fitnessFunction = fitnessFunction;
     }
 }

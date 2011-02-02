@@ -11,8 +11,8 @@ import ro.ddanciu.jevo.core.Individual;
  *
  * @author dan
  */
-public interface MutationOperator {
+public interface MutationOperator<I> {
 
-    public boolean operate(Individual individual);
+    public boolean operate(Individual<I> individual);
 
 }

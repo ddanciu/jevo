@@ -11,8 +11,8 @@ import java.util.Set;
  *
  * @author dan
  */
-public interface Stopper {
+public interface Stopper<I> {
 
-    public boolean stop(Set<Individual<?>> population);
+    public boolean stop(Set<Individual<I>> population);
 
 }

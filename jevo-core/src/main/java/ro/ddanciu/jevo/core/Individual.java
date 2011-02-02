@@ -32,7 +32,7 @@ public final class Individual<T> {
 
     public static  final class Factory {
         public static <D> Individual<D> newInstance(D data) {
-            return new Individual(UUID.randomUUID(), data);
+            return new Individual<D>(UUID.randomUUID(), data);
         }
     }
 
@@ -41,10 +41,10 @@ public final class Individual<T> {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (! (obj instanceof Individual<?>)) {
             return false;
         }
-        final Individual<T> other = (Individual<T>) obj;
+        final Individual<?> other = (Individual<?>) obj;
         return id == other.id;
     }
 

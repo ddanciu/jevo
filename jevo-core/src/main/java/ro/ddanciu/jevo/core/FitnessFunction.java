@@ -9,8 +9,8 @@ package ro.ddanciu.jevo.core;
  *
  * @author dan
  */
-public interface FitnessFunction<T> {
+public interface FitnessFunction<T, K> {
 
-    T eval(Individual individual);
+    T eval(Individual<K> individual);
     
 }

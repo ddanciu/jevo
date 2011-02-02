@@ -35,12 +35,12 @@ import ro.ddanciu.jevo.core.selectors.Selector;
 public class EvoAlgorithmTest {
 
     public static final int MAX_GENERATIONS = 5;
-    private EvoAlgorithm algorithm;
-    private Selector selector;
-    private CrossoverOperator crossoverOperator;
-    private MutationOperator mutationOperator;
-    private Stopper stopper;
-    private FitnessFunction<Integer> fitnessFunction;
+    private EvoAlgorithm<Object> algorithm;
+    private Selector<Object> selector;
+    private CrossoverOperator<Object> crossoverOperator;
+    private MutationOperator<Object> mutationOperator;
+    private Stopper<Object> stopper;
+    private FitnessFunction<Integer, Object> fitnessFunction;
 
     @Before
     public void init() {
@@ -51,11 +51,11 @@ public class EvoAlgorithmTest {
         stopper = mock(Stopper.class);
         fitnessFunction = mock(FitnessFunction.class);
 
-        Evaluator<Integer> evaluator = new Evaluator<Integer>();
+        Evaluator<Integer, Object> evaluator = new Evaluator<Integer, Object>();
         evaluator.setFitnessFunction(fitnessFunction);
 
 
-        algorithm = new EvoAlgorithm();
+        algorithm = new EvoAlgorithm<Object>();
         algorithm.setSelector(selector);
         algorithm.setCrossoverOperator(crossoverOperator);
         algorithm.setMutationOperator(mutationOperator);
@@ -67,10 +67,10 @@ public class EvoAlgorithmTest {
 
     @Test
     public void basic() {
-        Set<Individual<?>> initial = new HashSet<Individual<?>>();
-        Individual<?> i1 = Individual.Factory.newInstance(new Object());
-        Individual<?> i2 = Individual.Factory.newInstance(new Object());
-        Individual<?> i3 = Individual.Factory.newInstance(new Object());
+        Set<Individual<Object>> initial = new HashSet<Individual<Object>>();
+        Individual<Object> i1 = Individual.Factory.newInstance(new Object());
+        Individual<Object> i2 = Individual.Factory.newInstance(new Object());
+        Individual<Object> i3 = Individual.Factory.newInstance(new Object());
 
         initial.add(i1);
         initial.add(i2);
@@ -80,17 +80,16 @@ public class EvoAlgorithmTest {
                 .thenReturn(initial);
 
         when(crossoverOperator.operate(Matchers.any(Iterator.class)))
-                .thenAnswer(new Answer() {
+                .thenAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) {
                 Object[] args = invocation.getArguments();
-                Iterator<Individual> it = (Iterator<Individual>) args[0];
+                Iterator<Individual<Object>> it = (Iterator<Individual<Object>>) args[0];
                 return Collections.singleton(it.next()); //copy
             }
         });
 
-        when(mutationOperator.operate(Matchers.any(Individual.class)))
-                .thenReturn(false);
+        when(mutationOperator.operate(Matchers.any(Individual.class))).thenReturn(false);
 
         when(stopper.stop(initial)).thenReturn(false);
 
@@ -98,7 +97,7 @@ public class EvoAlgorithmTest {
         when(fitnessFunction.eval(i2)).thenReturn(2);
         when(fitnessFunction.eval(i3)).thenReturn(3);
         
-        Individual individual = algorithm.run(initial);
+        Individual<Object> individual = algorithm.run(initial);
 
         Assert.assertNotNull("Best individual not found!", individual);
         Assert.assertEquals("Winner not what expected!", i3, individual);
@@ -106,10 +105,10 @@ public class EvoAlgorithmTest {
 
     @Test
     public void stopByStopper() {
-        Set<Individual<?>> initial = new HashSet<Individual<?>>();
-        Individual<?> i1 = Individual.Factory.newInstance(new Object());
-        Individual<?> i2 = Individual.Factory.newInstance(new Object());
-        Individual<?> i3 = Individual.Factory.newInstance(new Object());
+        Set<Individual<Object>> initial = new HashSet<Individual<Object>>();
+        Individual<Object> i1 = Individual.Factory.newInstance(new Object());
+        Individual<Object> i2 = Individual.Factory.newInstance(new Object());
+        Individual<Object> i3 = Individual.Factory.newInstance(new Object());
 
         initial.add(i1);
         initial.add(i2);
@@ -120,11 +119,11 @@ public class EvoAlgorithmTest {
                 .thenThrow(new RuntimeException("Should not be reached!"));
 
         when(crossoverOperator.operate(Matchers.any(Iterator.class)))
-                .thenAnswer(new Answer() {
+                .thenAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) {
                 Object[] args = invocation.getArguments();
-                Iterator<Individual> it = (Iterator<Individual>) args[0];
+                Iterator<Individual<Object>> it = (Iterator<Individual<Object>>) args[0];
                 return Collections.singleton(it.next()); //copy
             }
         });
@@ -138,7 +137,7 @@ public class EvoAlgorithmTest {
         when(fitnessFunction.eval(i2)).thenReturn(2);
         when(fitnessFunction.eval(i3)).thenReturn(3);
 
-        Individual individual = algorithm.run(initial);
+        Individual<Object> individual = algorithm.run(initial);
 
         Assert.assertNotNull("Best individual not found!", individual);
         Assert.assertEquals("Winner not what expected!", i3, individual);
