@@ -1,5 +1,7 @@
 package ro.ddanciu.jevo.core;
 
+import static java.lang.String.format;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -17,7 +19,7 @@ import ro.ddanciu.jevo.core.selectors.Selector;
  * @author dan
  */
 public class EvoAlgorithm<I> {
-
+	
     private int maxGenerations;
 
     private Selector<I> selector;
@@ -42,6 +44,8 @@ public class EvoAlgorithm<I> {
         Set<Individual<I>> population = intialPopulation;
         do {
 
+        	System.out.println(format("Generation %d: %s", generation, population));
+        	
         	population = reproduction(population);
         	population = select(population);
 

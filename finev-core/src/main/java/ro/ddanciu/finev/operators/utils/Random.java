@@ -23,5 +23,9 @@ public class Random {
 		
 		return null;
 	}
+	
+	public boolean rate(float coefficient) {
+		return randomGenerator.nextFloat() > coefficient;
+	}
 
 }

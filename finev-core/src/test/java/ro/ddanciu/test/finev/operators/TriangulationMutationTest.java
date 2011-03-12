@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 
 import ro.ddanciu.finev.operators.TriangulationMutation;
@@ -17,8 +18,6 @@ import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.jevo.core.Individual;
 
 public class TriangulationMutationTest {
-	
-
 
 	private Set<Triangle> triangles;
 	private Triangle a;
@@ -27,7 +26,7 @@ public class TriangulationMutationTest {
 	
 	private Individual<Set<Triangle>> individual;
 	
-	private Random randomGenerator;
+	private Random random;
 	private TriangulationMutation operator;
 
 	@Before
@@ -43,9 +42,11 @@ public class TriangulationMutationTest {
 		
 		individual = Individual.Factory.newInstance(triangles);
 		
-		randomGenerator = Mockito.mock(Random.class);
+		random = Mockito.mock(Random.class);
+		Mockito.when(random.rate(Matchers.anyFloat())).thenReturn(true);
+		
 		operator = new TriangulationMutation();
-		operator.setRandom(randomGenerator);
+		operator.setRandom(random);
 	}
 
 
@@ -53,7 +54,7 @@ public class TriangulationMutationTest {
 	@Test
 	public void basic() {
 		
-		Mockito.when(randomGenerator.choice(triangles)).thenReturn(a);
+		Mockito.when(random.choice(triangles)).thenReturn(a);
 
 		operator.operate(individual);
 		
@@ -72,7 +73,7 @@ public class TriangulationMutationTest {
 	@Test
 	public void otherWay() {
 
-		Mockito.when(randomGenerator.choice(triangles)).thenReturn(b);
+		Mockito.when(random.choice(triangles)).thenReturn(b);
 		operator.operate(individual);
 		
 		Triangle expected1 = new Triangle(new Point(1, 0), new Point(0, 4), new Point(3, 3));
@@ -89,7 +90,7 @@ public class TriangulationMutationTest {
 	@Test
 	public void broken() {
 
-		Mockito.when(randomGenerator.choice(triangles)).thenReturn(c);
+		Mockito.when(random.choice(triangles)).thenReturn(c);
 
 		operator.operate(individual);
 		

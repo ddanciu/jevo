@@ -53,5 +53,12 @@ public final class Individual<T> {
         return id.hashCode();
     }
 
+	@Override
+	public String toString() {
+		return "Individual[" + data + "]";
+	}
+    
+      
+
 
 }

@@ -18,12 +18,22 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 
 	private Random random;
 	
+	private float rate;
+	
 	public void setRandom(Random random) {
 		this.random = random;
 	}
 
+	public void setRate(float rate) {
+		this.rate = rate;
+	}
+
 	@Override
 	protected boolean operateInternal(Set<Triangle> triangles) {
+		
+		if (!random.rate(rate)) {
+			return false;
+		}
 		
 		Triangle winner = random.choice(triangles);
 		

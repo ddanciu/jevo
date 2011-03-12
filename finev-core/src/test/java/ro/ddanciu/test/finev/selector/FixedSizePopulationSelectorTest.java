@@ -56,6 +56,16 @@ public class FixedSizePopulationSelectorTest {
 	}
 
 	@Test
+	public void one() {
+		selector.setPopulationSize(1);
+		Set<Individual<String>> expected = Collections.singleton(one);
+		Set<Individual<String>> result = selector.choose(expected);
+		
+		assertSame("Same collection not returned when no changes happened!", expected, result);
+	}
+
+
+	@Test
 	public void simple() {
 		Set<Individual<String>> population = new HashSet<Individual<String>>();
 		population.add(one);
@@ -77,12 +87,26 @@ public class FixedSizePopulationSelectorTest {
 	}
 
 	@Test
-	public void one() {
-		selector.setPopulationSize(1);
-		Set<Individual<String>> expected = Collections.singleton(one);
-		Set<Individual<String>> result = selector.choose(expected);
+	public void same() {
+		Individual<String> first = Individual.Factory.newInstance("first");
+		Individual<String> second = Individual.Factory.newInstance("second");
+		Individual<String> third = Individual.Factory.newInstance("third");
+
+		Set<Individual<String>> population = new HashSet<Individual<String>>();
+		population.add(first);
+		population.add(second);
+		population.add(third);
 		
-		assertSame("Same collection not returned when no changes happened!", expected, result);
+
+		Mockito.when(evaluator.evaluate(first)).thenReturn(1);
+		Mockito.when(evaluator.evaluate(second)).thenReturn(1);
+		Mockito.when(evaluator.evaluate(third)).thenReturn(1);
+		
+		selector.setPopulationSize(2);
+		Set<Individual<String>> result = selector.choose(population);
+		
+		assertEquals("Selection failed!", 2, result.size());
+
 	}
 	
 }

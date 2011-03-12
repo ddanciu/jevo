@@ -26,7 +26,7 @@ public class Starter {
 			System.exit(1);
 		}
 
-		ApplicationContext context = new ClassPathXmlApplicationContext("ro/ddanciu/finev/beans.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:/ro/ddanciu/finev/beans.xml");
 		
 		EvoAlgorithm<Set<Triangle>> algorithm = 
 				(EvoAlgorithm<Set<Triangle>>) context.getBean("algorithm", EvoAlgorithm.class);
@@ -37,7 +37,9 @@ public class Starter {
 			initialPopulation.add(Individual.Factory.newInstance(o));
 		}
 		
-		algorithm.run(initialPopulation);
+		Individual<Set<Triangle>> winner = algorithm.run(initialPopulation);
+		
+		System.out.println(winner.getData());
 	}
 
 }

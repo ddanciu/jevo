@@ -42,6 +42,14 @@ public class TriangulationCrossover extends AbstractCrossoverOperator<Set<Triang
 		
 		Set<Vector> onlyMoms = new HashSet<Vector>(momsMapping.keySet());
 		onlyMoms.removeAll(dadsMapping.keySet());
+		
+		if (onlyMoms.isEmpty()) {
+			Set<Set<Triangle>> parents = new HashSet<Set<Triangle>>();
+			parents.add(mom);
+			parents.add(dad);
+			return parents;
+		}
+		
 		int pos = randomGenerator.nextInt(onlyMoms.size());
 
 		int i = 0;

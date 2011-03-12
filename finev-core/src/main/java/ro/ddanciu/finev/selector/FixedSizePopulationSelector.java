@@ -3,8 +3,8 @@ package ro.ddanciu.finev.selector;
 import static java.lang.String.format;
 
 import java.util.HashSet;
+import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.TreeMap;
 
 import ro.ddanciu.jevo.core.Evaluator;
 import ro.ddanciu.jevo.core.Individual;
@@ -39,15 +39,15 @@ public class FixedSizePopulationSelector<X extends Comparable<X>, D> implements 
 			return population;
 		}
 
-		TreeMap<Comparable<X>, Individual<D>> judge = new TreeMap<Comparable<X>, Individual<D>>();
+		PriorityQueue<Competitor> judge = new PriorityQueue<Competitor>();
 		
 		for (Individual<D> i : population) {
-			judge.put(evaluator.evaluate(i), i);
+			judge.add(new Competitor(i));
 		}
 		
 		Set<Individual<D>> newPop = new HashSet<Individual<D>>();
 		for (int i = 0; i < populationSize; i++) {
-			newPop.add(judge.pollFirstEntry().getValue());
+			newPop.add(judge.poll().individual);
 		}
 		return newPop;
 	}
@@ -64,5 +64,22 @@ public class FixedSizePopulationSelector<X extends Comparable<X>, D> implements 
 			}
 		}
 		return best;
+	}
+	
+	private final class Competitor implements Comparable<Competitor> {
+
+		private final Individual<D> individual;
+		private final X fitness;
+
+		public Competitor(Individual<D> i) {
+			fitness = evaluator.evaluate(i);
+			this.individual = i;
+		}
+
+		@Override
+		public int compareTo(Competitor other) {
+			return fitness.compareTo(other.fitness);
+		}
+		
 	}
 }
