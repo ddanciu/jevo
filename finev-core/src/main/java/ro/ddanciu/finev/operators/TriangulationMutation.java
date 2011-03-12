@@ -56,7 +56,7 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 		Point otherOfB = otherOf(b, common);
 
 		Triangle t1 = new Triangle(otherOfA, otherOfB, common.getP1());
-		Triangle t2 = new Triangle(otherOfA, otherOfB, common.getP2());
+		Triangle t2 = new Triangle(otherOfA, common.getP2(), otherOfB);
 		
 		BigDecimal oldArea = area(a).add(area(b), MY_CNTX);
 		BigDecimal newArea = area(t1).add(area(t2), MY_CNTX);
