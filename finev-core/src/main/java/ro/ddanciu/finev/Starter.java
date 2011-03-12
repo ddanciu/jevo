@@ -2,6 +2,7 @@ package ro.ddanciu.finev;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,8 +31,8 @@ public class Starter {
 		
 		EvoAlgorithm<Set<Triangle>> algorithm = 
 				(EvoAlgorithm<Set<Triangle>>) context.getBean("algorithm", EvoAlgorithm.class);
-		Set<Set<Triangle>> options = ((InitialPopulation) context.getBean("initialPopulation", InitialPopulation.class)).generate(original);
-		Set<Individual<Set<Triangle>>> initialPopulation = new HashSet<Individual<Set<Triangle>>>();
+		Collection<Set<Triangle>> options = ((InitialPopulation) context.getBean("initialPopulation", InitialPopulation.class)).generate(original);
+		Collection<Individual<Set<Triangle>>> initialPopulation = new HashSet<Individual<Set<Triangle>>>();
 
 		for (Set<Triangle> o : options) {
 			initialPopulation.add(Individual.Factory.newInstance(o));

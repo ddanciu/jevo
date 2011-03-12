@@ -2,6 +2,7 @@ package ro.ddanciu.jevo.core;
 
 import static java.lang.String.format;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -39,9 +40,9 @@ public class EvoAlgorithm<I> {
      * 
      * @return
      */
-    public Individual<I> run(Set<Individual<I>> intialPopulation) {
+    public Individual<I> run(Collection<Individual<I>> intialPopulation) {
         int generation = 0;
-        Set<Individual<I>> population = intialPopulation;
+        Collection<Individual<I>> population = intialPopulation;
         do {
 
         	System.out.println(format("Generation %d: %s", generation, population));
@@ -54,17 +55,17 @@ public class EvoAlgorithm<I> {
         return selector.best(population);
     }
     
-    private Set<Individual<I>> select(Set<Individual<I>> population) {
+    private Collection<Individual<I>> select(Collection<Individual<I>> population) {
         return selector.choose(population);
     }
 
-    private Set<Individual<I>> reproduction(Set<Individual<I>> parents) {
-        Set<Individual<I>> population = crossover(parents);
+    private Collection<Individual<I>> reproduction(Collection<Individual<I>> parents) {
+        Collection<Individual<I>> population = crossover(parents);
         population = mutation(population);
         return population;
     }
 
-    private Set<Individual<I>> crossover(Set<Individual<I>> parents) {
+    private Set<Individual<I>> crossover(Collection<Individual<I>> parents) {
         
         Set<Individual<I>> next = new HashSet<Individual<I>>(parents);
         
@@ -78,7 +79,7 @@ public class EvoAlgorithm<I> {
 
     }
 
-    private Set<Individual<I>> mutation(Set<Individual<I>> population) {
+    private Collection<Individual<I>> mutation(Collection<Individual<I>> population) {
         for (Individual<I> individual : population) {
             mutationOperator.operate(individual);
         }
@@ -86,7 +87,7 @@ public class EvoAlgorithm<I> {
         return population;
     }
 
-    private boolean stop(Set<Individual<I>> population) {
+    private boolean stop(Collection<Individual<I>> population) {
         return stopper.stop(population);
     }
 

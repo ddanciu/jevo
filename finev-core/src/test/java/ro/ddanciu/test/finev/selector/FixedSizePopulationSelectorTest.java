@@ -4,6 +4,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class FixedSizePopulationSelectorTest {
 	public void one() {
 		selector.setPopulationSize(1);
 		Set<Individual<String>> expected = Collections.singleton(one);
-		Set<Individual<String>> result = selector.choose(expected);
+		Collection<Individual<String>> result = selector.choose(expected);
 		
 		assertSame("Same collection not returned when no changes happened!", expected, result);
 	}
@@ -75,7 +76,7 @@ public class FixedSizePopulationSelectorTest {
 		population.add(five);
 		
 		selector.setPopulationSize(3);
-		Set<Individual<String>> result = selector.choose(population);
+		Set<Individual<String>> result = new HashSet<Individual<String>>(selector.choose(population));
 		
 		Set<Individual<String>> expected = new HashSet<Individual<String>>();
 		expected.add(one);
@@ -103,7 +104,7 @@ public class FixedSizePopulationSelectorTest {
 		Mockito.when(evaluator.evaluate(third)).thenReturn(1);
 		
 		selector.setPopulationSize(2);
-		Set<Individual<String>> result = selector.choose(population);
+		Set<Individual<String>> result = new HashSet<Individual<String>>(selector.choose(population));
 		
 		assertEquals("Selection failed!", 2, result.size());
 

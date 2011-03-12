@@ -1,6 +1,7 @@
 package ro.ddanciu.finev;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,7 +41,7 @@ public class InitialPopulation {
 		this.size = size;
 	}
 
-	public Set<Set<Triangle>> generate(PoliLine original) {
+	public Collection<Set<Triangle>> generate(PoliLine original) {
 		trapezoidation = new SeidelTrapezoidation();
 		
 		Set<PoliLine> decomposition = trapezoidation.decompose(original);
@@ -55,7 +56,7 @@ public class InitialPopulation {
 		}
 		
 		
-		Set<Set<Triangle>> individuals = new HashSet<Set<Triangle>>();
+		List<Set<Triangle>> individuals = new ArrayList<Set<Triangle>>();
 		for (int i = 0; i < size; i++) {
 			Set<Triangle> individual = new HashSet<Triangle>();
 			

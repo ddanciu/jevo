@@ -2,6 +2,7 @@ package ro.ddanciu.finev.selector;
 
 import static java.lang.String.format;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -28,7 +29,7 @@ public class FixedSizePopulationSelector<X extends Comparable<X>, D> implements 
 	}
 
 	@Override
-	public Set<Individual<D>> choose(Set<Individual<D>> population) {
+	public Collection<Individual<D>> choose(Collection<Individual<D>> population) {
 		
 		if (population.size() < populationSize) {
 			throw new IllegalArgumentException(
@@ -53,7 +54,7 @@ public class FixedSizePopulationSelector<X extends Comparable<X>, D> implements 
 	}
 	
 	@Override
-	public Individual<D> best(Set<Individual<D>> population) {
+	public Individual<D> best(Collection<Individual<D>> population) {
 		X maxFitness = null;
 		Individual<D> best = null;
 		for (Individual<D> individual : population) {

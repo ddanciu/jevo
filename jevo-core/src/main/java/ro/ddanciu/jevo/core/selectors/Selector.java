@@ -1,6 +1,7 @@
 package ro.ddanciu.jevo.core.selectors;
 
-import java.util.Set;
+import java.util.Collection;
+
 import ro.ddanciu.jevo.core.Individual;
 
 /**
@@ -9,8 +10,8 @@ import ro.ddanciu.jevo.core.Individual;
  */
 public interface Selector<I> {
 
-    Set<Individual<I>> choose(Set<Individual<I>> population);
+    Collection<Individual<I>> choose(Collection<Individual<I>> population);
 
-	Individual<I> best(Set<Individual<I>> population);
+	Individual<I> best(Collection<Individual<I>> population);
 
 }

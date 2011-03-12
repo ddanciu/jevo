@@ -1,6 +1,6 @@
 package ro.ddanciu.finev;
 
-import java.util.Set;
+import java.util.Collection;
 
 import ro.ddanciu.jevo.core.Individual;
 import ro.ddanciu.jevo.core.Stopper;
@@ -8,7 +8,7 @@ import ro.ddanciu.jevo.core.Stopper;
 public class DummyStopper<D> implements Stopper<D> {
 
 	@Override
-	public boolean stop(Set<Individual<D>> population) {
+	public boolean stop(Collection<Individual<D>> population) {
 		return false;
 	}
 

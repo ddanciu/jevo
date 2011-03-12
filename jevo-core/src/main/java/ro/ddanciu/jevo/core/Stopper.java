@@ -5,7 +5,7 @@
 
 package ro.ddanciu.jevo.core;
 
-import java.util.Set;
+import java.util.Collection;
 
 /**
  *
@@ -13,6 +13,6 @@ import java.util.Set;
  */
 public interface Stopper<I> {
 
-    public boolean stop(Set<Individual<I>> population);
+    public boolean stop(Collection<Individual<I>> population);
 
 }
