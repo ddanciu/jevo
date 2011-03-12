@@ -60,7 +60,6 @@ public class EvoAlgorithmTest {
         algorithm.setCrossoverOperator(crossoverOperator);
         algorithm.setMutationOperator(mutationOperator);
         algorithm.setStopper(stopper);
-        algorithm.setEvaluator(evaluator);
         algorithm.setMaxGenerations(MAX_GENERATIONS);
 
     }

@@ -13,7 +13,7 @@ import java.util.UUID;
  *
  * @author dan
  */
-public final class Evaluator<T extends Comparable<?>, K> {
+public class Evaluator<T extends Comparable<T>, K> {
     
     private final Map<UUID, T> cache = new HashMap<UUID, T>();
 

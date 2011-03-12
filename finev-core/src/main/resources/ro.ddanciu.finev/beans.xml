@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties">
+			<props>
+				<prop key="max.generations">5</prop>
+				<prop key="populations.size">10</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean name="randomGenerator" class="java.util.Random"></bean>
+	
+	<bean name="random" class="ro.ddanciu.finev.operators.utils.Random">
+		<property name="randomGenerator" ref="randomGenerator"/>
+	</bean>
+
+	<bean name="algorithm" class="ro.ddanciu.jevo.core.EvoAlgorithm">
+		<property name="maxGenerations" value="${max.generations}"/>
+		<property name="crossoverOperator">
+			<bean class="ro.ddanciu.finev.operators.TriangulationCrossover">
+				<property name="randomGenerator" ref="randomGenerator"/>
+			</bean>
+		</property>
+		<property name="mutationOperator">
+			<bean class="ro.ddanciu.finev.operators.TriangulationMutation">
+				<property name="random" ref="random"/>
+			</bean>
+		</property>
+		<property name="selector">
+			<bean class="ro.ddanciu.finev.selector.FixedSizePopulationSelector">
+				<property name="evaluator" ref="evaluator"/>
+				<property name="populationSize" value="${population.size}"/>
+			</bean>
+		</property>
+		<property name="stopper">
+			<bean class="ro.ddanciu.finev.DummyStopper"/>
+		</property>
+	</bean>
+	
+	<bean name="initialPopulation" class="ro.ddanciu.finev.InitialPopulation" scope="prototype">
+		<property name="randomGenerator" ref="randomGenerator"/>
+		<property name="size" value="${population.size}"/>
+		<property name="cornerFanDecomposition" ref="decomposition"/>
+		<property name="trapezoidation" ref="trapezoidation"/>
+	</bean>
+	
+	<bean name="trapezoidation" class="ro.ddanciu.finite.elements.algorithms.SeidelTrapezoidation" scope="prototype"/>
+	<bean name="decomposition" class="ro.ddanciu.finite.elements.algorithms.CornerFanDecomposition" scope="prototype"/>
+	
+	<bean name="evaluator" class="ro.ddanciu.jevo.core.Evaluator">
+		<property name="fitnessFunction">
+			<bean class="ro.ddanciu.finev.TriangulationFitness"/>
+		</property>
+	</bean>
+</beans>

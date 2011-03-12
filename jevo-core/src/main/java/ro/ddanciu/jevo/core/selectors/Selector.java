@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ro.ddanciu.jevo.core.selectors;
 
 import java.util.Set;
@@ -15,5 +10,7 @@ import ro.ddanciu.jevo.core.Individual;
 public interface Selector<I> {
 
     Set<Individual<I>> choose(Set<Individual<I>> population);
+
+	Individual<I> best(Set<Individual<I>> population);
 
 }

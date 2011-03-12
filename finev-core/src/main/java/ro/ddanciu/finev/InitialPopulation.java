@@ -13,7 +13,7 @@ import ro.ddanciu.finite.elements.algorithms.SeidelTrapezoidation;
 import ro.ddanciu.finite.elements.api.PoliLine;
 import ro.ddanciu.finite.elements.api.Triangle;
 
-public class PopulationGenerator {
+public class InitialPopulation {
 
 	private Random randomGenerator;
 
@@ -21,7 +21,26 @@ public class PopulationGenerator {
 
 	private SeidelTrapezoidation trapezoidation;
 
-	public Set<Set<Triangle>> generate(PoliLine original, int howMany) {
+	private int size;
+
+	public void setRandomGenerator(Random randomGenerator) {
+		this.randomGenerator = randomGenerator;
+	}
+
+	public void setCornerFanDecomposition(
+			CornerFanDecomposition cornerFanDecomposition) {
+		this.cornerFanDecomposition = cornerFanDecomposition;
+	}
+
+	public void setTrapezoidation(SeidelTrapezoidation trapezoidation) {
+		this.trapezoidation = trapezoidation;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
+
+	public Set<Set<Triangle>> generate(PoliLine original) {
 		trapezoidation = new SeidelTrapezoidation();
 		
 		Set<PoliLine> decomposition = trapezoidation.decompose(original);
@@ -37,7 +56,7 @@ public class PopulationGenerator {
 		
 		
 		Set<Set<Triangle>> individuals = new HashSet<Set<Triangle>>();
-		for (int i = 0; i < howMany; i++) {
+		for (int i = 0; i < size; i++) {
 			Set<Triangle> individual = new HashSet<Triangle>();
 			
 			for (List<Set<Triangle>> triangles: pool.values()) {

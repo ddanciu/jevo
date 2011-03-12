@@ -28,8 +28,6 @@ public class EvoAlgorithm<I> {
 
     private Stopper<I> stopper;
 
-    private Evaluator<Integer, I> evaluator;
-
     /**
      * repeat
      *   parents := SELECTION population, FiTNESS-FN)
@@ -44,12 +42,12 @@ public class EvoAlgorithm<I> {
         Set<Individual<I>> population = intialPopulation;
         do {
 
-            Set<Individual<I>> parents = select(population);
-            population = reproduction(parents);
+        	population = reproduction(population);
+        	population = select(population);
 
         } while (!stop(population) && generation++ < maxGenerations);
 
-        return best(population);
+        return selector.best(population);
     }
     
     private Set<Individual<I>> select(Set<Individual<I>> population) {
@@ -59,7 +57,6 @@ public class EvoAlgorithm<I> {
     private Set<Individual<I>> reproduction(Set<Individual<I>> parents) {
         Set<Individual<I>> population = crossover(parents);
         population = mutation(population);
-
         return population;
     }
 
@@ -89,19 +86,6 @@ public class EvoAlgorithm<I> {
         return stopper.stop(population);
     }
 
-    private Individual<I> best(Set<Individual<I>> population) {
-        Integer maxFitness = null;
-        Individual<I> best = null;
-        for (Individual<I> individual : population) {
-            Integer fitness = evaluator.evaluate(individual);
-            if (maxFitness == null || fitness.compareTo(maxFitness) > 0) {
-                maxFitness = fitness;
-                best = individual;
-            }
-        }
-        return best;
-    }
-
     public int getMaxGenerations() {
         return maxGenerations;
     }
@@ -124,10 +108,6 @@ public class EvoAlgorithm<I> {
 
     public void setStopper(Stopper<I> stopper) {
         this.stopper = stopper;
-    }
-
-    public void setEvaluator(Evaluator<Integer, I> evaluator) {
-        this.evaluator = evaluator;
     }
 
 }
