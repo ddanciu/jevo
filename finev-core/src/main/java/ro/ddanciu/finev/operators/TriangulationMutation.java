@@ -68,6 +68,8 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 			triangles.add(t1);
 			triangles.add(t2);
 			
+			System.out.println(String.format("Mutation: %s and %s", t1, t2));
+			
 			return true;
 		}
 		

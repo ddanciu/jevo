@@ -62,7 +62,12 @@ public class TriangulationCrossover extends AbstractCrossoverOperator<Set<Triang
 		}
 		
 		
-		Set<Vector> minimum = minimumCommonPoliLine(momsMapping, dadsMapping, winner);
+		Set<Vector> minimum;
+		try {
+			minimum = minimumCommonPoliLine(momsMapping, dadsMapping, winner);
+		} catch (RuntimeException e) {
+			throw e;
+		}
 
 		Set<Triangle> child1 = new HashSet<Triangle>();
 		child1.addAll(gatherInterior(momsMapping, minimum));
