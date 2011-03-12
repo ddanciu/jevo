@@ -126,7 +126,7 @@ public class GmshFile {
 
 	private void writeFormat(PrintStream out) {
 		out.println(FORMAT_START);
-		out.println(format("%s %d %d", format, type, size));
+		out.println(format("%s %s %s", format, type, size));
 		out.println(FORMAT_END);
 	} 
 	

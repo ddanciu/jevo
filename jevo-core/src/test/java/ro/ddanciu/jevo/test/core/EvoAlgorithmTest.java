@@ -75,8 +75,8 @@ public class EvoAlgorithmTest {
         initial.add(i2);
         initial.add(i3);
 
-        when(selector.choose(initial))
-                .thenReturn(initial);
+        when(selector.choose(initial)).thenReturn(initial);
+        when(selector.best(initial)).thenReturn(i3);
 
         when(crossoverOperator.operate(Matchers.any(Iterator.class)))
                 .thenAnswer(new Answer<Object>() {
@@ -116,6 +116,7 @@ public class EvoAlgorithmTest {
         when(selector.choose(initial))
                 .thenReturn(initial)
                 .thenThrow(new RuntimeException("Should not be reached!"));
+        when(selector.best(initial)).thenReturn(i3);
 
         when(crossoverOperator.operate(Matchers.any(Iterator.class)))
                 .thenAnswer(new Answer<Object>() {
