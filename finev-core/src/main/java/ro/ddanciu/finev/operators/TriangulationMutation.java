@@ -43,7 +43,8 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 			}
 			Segment common = TriangleUtils.segmentInCommon(winner, t);
 			if (common != null) { 
-				return swap(triangles, winner, t, common);
+				boolean swapped = swap(triangles, winner, t, common);
+				return swapped;
 			}
 		}
 		
@@ -54,10 +55,18 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 
 		Point otherOfA = otherOf(a, common);
 		Point otherOfB = otherOf(b, common);
-
-		Triangle t1 = new Triangle(otherOfA, otherOfB, common.getP1());
-		Triangle t2 = new Triangle(otherOfA, common.getP2(), otherOfB);
 		
+		Triangle t1;
+		Triangle t2;
+
+		if (TriangleUtils.counterClockwise(otherOfA, otherOfB, common.getP1()) < 0) {
+			t1 = new Triangle(otherOfA, otherOfB, common.getP1());
+			t2 = new Triangle(otherOfA, common.getP2(), otherOfB);
+		} else {
+			t1 = new Triangle(otherOfB, otherOfA, common.getP1());
+			t2 = new Triangle(otherOfB, common.getP2(), otherOfA);
+		}
+
 		BigDecimal oldArea = area(a).add(area(b), MY_CNTX);
 		BigDecimal newArea = area(t1).add(area(t2), MY_CNTX);
 		

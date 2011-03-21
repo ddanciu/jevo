@@ -10,9 +10,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
+import ro.ddanciu.finev.operators.utils.Random;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.finite.elements.api.Vector;
 import ro.ddanciu.jevo.core.operators.AbstractCrossoverOperator;
@@ -41,31 +41,33 @@ public class TriangulationCrossover extends AbstractCrossoverOperator<Set<Triang
 		Map<Vector, List<Vector>> dadsMapping = mapping(dad);
 		
 		Set<Vector> onlyMoms = new HashSet<Vector>(momsMapping.keySet());
-		onlyMoms.removeAll(dadsMapping.keySet());
-		
-		if (onlyMoms.isEmpty()) {
-			Set<Set<Triangle>> parents = new HashSet<Set<Triangle>>();
-			parents.add(mom);
-			parents.add(dad);
-			return parents;
+		for (Vector v : dadsMapping.keySet()) {
+			onlyMoms.remove(v);
+			onlyMoms.remove(v.invert());
 		}
-		
-		int pos = randomGenerator.nextInt(onlyMoms.size());
-
-		int i = 0;
-		Vector winner = null;
-		for (Vector os : onlyMoms) {
-			if (i == pos) {
-				winner = os;
-			}
-			i++;
-		}
-		
 		
 		Set<Vector> minimum;
+		Vector winner = randomGenerator.choice(onlyMoms);
 		try {
-			minimum = minimumCommonPoliLine(momsMapping, dadsMapping, winner);
+
+			if (winner != null) {
+				minimum = minimumCommonPoliLine(momsMapping, dadsMapping, winner);
+			} else {
+				minimum = null;
+			}
+	
+			if (minimum == null) {
+				Set<Set<Triangle>> parents = new HashSet<Set<Triangle>>();
+				parents.add(mom);
+				parents.add(dad);
+				return parents;
+			}
+			
 		} catch (RuntimeException e) {
+			e.printStackTrace();
+			System.out.println(String.format("Mom: %s", mom));
+			System.out.println(String.format("Dad: %s", dad));
+			System.out.println(String.format("Common: %s", winner));
 			throw e;
 		}
 

@@ -13,6 +13,10 @@ public class Random {
 	
 	public <I> I choice(Set<I> supply) {
 		
+		if (supply.size() > 0) {
+			return null;
+		}
+		
 		int pos = randomGenerator.nextInt(supply.size());
 		int i = 0;
 		for (I t : supply) {
@@ -21,6 +25,7 @@ public class Random {
 			}
 		}
 		
+		assert false : "Illegal situation which should never be reached!";
 		return null;
 	}
 	

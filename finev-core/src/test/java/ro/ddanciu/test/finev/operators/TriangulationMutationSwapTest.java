@@ -67,5 +67,34 @@ public class TriangulationMutationSwapTest {
 		assertTrue("Colateral damage!", triangles.contains(a));
 		
 	}
+	
+	@Test
+	public void something() {
+		
+		triangles = new HashSet<Triangle>();
+		a = new Triangle(new Point(0, 2), new Point(3, 6), new Point(4, 4));
+		b = new Triangle(new Point(0, 2), new Point(1, 5), new Point(3, 6));
+		
+		triangles.add(a);
+		triangles.add(b);
+		
+		Segment common = new Segment(new Point(0, 2), new Point(3, 6));
+
+		
+		boolean doneIt = TriangulationMutation.swap(triangles, a, b, common);
+		
+		assertTrue("Mutation didn't happen!", doneIt);
+		assertFalse("Original still in set!", triangles.contains(a));
+		assertFalse("Original still in set!", triangles.contains(b));
+		
+		
+		Triangle expected1 = new Triangle(new Point(0, 2), new Point(1, 5), new Point(4, 4));
+		assertTrue("New triangle missing!", triangles.contains(expected1));
+		
+		Triangle expected2 = new Triangle(new Point(1, 5), new Point(3, 6), new Point(4, 4));
+		assertTrue("New triangle missing!", triangles.contains(expected2));
+		
+		
+	}
 
 }
