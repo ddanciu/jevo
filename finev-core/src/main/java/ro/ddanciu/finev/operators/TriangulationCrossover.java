@@ -19,10 +19,10 @@ import ro.ddanciu.jevo.core.operators.AbstractCrossoverOperator;
 
 public class TriangulationCrossover extends AbstractCrossoverOperator<Set<Triangle>> {
 	
-	private Random randomGenerator;
+	private Random random;
 
-	public void setRandomGenerator(Random randomGenerator) {
-		this.randomGenerator = randomGenerator;
+	public void setRandom(Random randomGenerator) {
+		this.random = randomGenerator;
 	}
 
 	@Override
@@ -46,14 +46,17 @@ public class TriangulationCrossover extends AbstractCrossoverOperator<Set<Triang
 			onlyMoms.remove(v.invert());
 		}
 		
-		Set<Vector> minimum;
-		Vector winner = randomGenerator.choice(onlyMoms);
+		Set<Vector> minimum = null;
+		Vector winner = null;
 		try {
 
-			if (winner != null) {
-				minimum = minimumCommonPoliLine(momsMapping, dadsMapping, winner);
-			} else {
-				minimum = null;
+			if (!onlyMoms.isEmpty()) {
+				winner = random.choice(onlyMoms);
+				if (winner != null) {
+					minimum = minimumCommonPoliLine(momsMapping, dadsMapping, winner);
+				} else {
+					minimum = null;
+				}
 			}
 	
 			if (minimum == null) {

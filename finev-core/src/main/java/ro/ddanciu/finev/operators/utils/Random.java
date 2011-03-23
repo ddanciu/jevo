@@ -13,7 +13,7 @@ public class Random {
 	
 	public <I> I choice(Set<I> supply) {
 		
-		if (supply.size() > 0) {
+		if (supply.isEmpty()) {
 			return null;
 		}
 		

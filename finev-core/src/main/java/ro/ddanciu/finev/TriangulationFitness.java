@@ -20,12 +20,15 @@ public class TriangulationFitness implements FitnessFunction<BigDecimal, Set<Tri
 	@Override
 	public BigDecimal eval(Individual<Set<Triangle>> individual) {
 		Set<Triangle> data = individual.getData();
-		BigDecimal total = ZERO;
+		BigDecimal best = ZERO;
 		for (Triangle t : data) {
-			total = total.add(eval(t), MY_CNTX);
+			BigDecimal x = eval(t);
+			if (best.compareTo(x) < 0) {
+				best = x;
+			}
 		}
 		
-		return total;
+		return best;
 	}
 	
 	public BigDecimal eval(Triangle t) {

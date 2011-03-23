@@ -64,6 +64,7 @@ public class FixedSizePopulationSelector<X extends Comparable<X>, D> implements 
 				best = individual;
 			}
 		}
+		System.out.println(String.format("Max fitness: %s", maxFitness));
 		return best;
 	}
 	

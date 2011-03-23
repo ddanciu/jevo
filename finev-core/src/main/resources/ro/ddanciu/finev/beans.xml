@@ -7,9 +7,9 @@
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="properties">
 			<props>
-				<prop key="max.generations">10</prop>
-				<prop key="population.size">4</prop>
-				<prop key="crossover.rate">0.5</prop>
+				<prop key="max.generations">100</prop>
+				<prop key="population.size">10</prop>
+				<prop key="crossover.rate">0.3</prop>
 			</props>
 		</property>
 	</bean>
@@ -24,7 +24,7 @@
 		<property name="maxGenerations" value="${max.generations}"/>
 		<property name="crossoverOperator">
 			<bean class="ro.ddanciu.finev.operators.TriangulationCrossover">
-				<property name="randomGenerator" ref="randomGenerator"/>
+				<property name="random" ref="random"/>
 			</bean>
 		</property>
 		<property name="mutationOperator">
