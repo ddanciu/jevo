@@ -1,4 +1,4 @@
-package ro.ddanciu.finev;
+package ro.ddanciu.finev.fitness;
 
 import static java.math.BigDecimal.ZERO;
 import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
@@ -13,7 +13,7 @@ import ro.ddanciu.jevo.core.Individual;
 /**
  * @author dan
  */
-public class TriangulationFitness implements FitnessFunction<BigDecimal, Set<Triangle>> {
+public class SummingTriangulationFitness implements FitnessFunction<BigDecimal, Set<Triangle>> {
 
 	private static final BigDecimal TWO = new BigDecimal(2);
 

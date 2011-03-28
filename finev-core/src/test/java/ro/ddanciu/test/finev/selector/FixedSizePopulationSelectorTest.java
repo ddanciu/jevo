@@ -1,6 +1,7 @@
 package ro.ddanciu.test.finev.selector;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 
@@ -26,9 +27,9 @@ public class FixedSizePopulationSelectorTest {
 	private Individual<String> three;
 	private Individual<String> four;
 	private Individual<String> five;
+
 	
-	
-	
+	@SuppressWarnings("unchecked")
 	@Before
 	public void init() {
 		evaluator = mock(Evaluator.class);
@@ -49,6 +50,41 @@ public class FixedSizePopulationSelectorTest {
 		Mockito.when(evaluator.evaluate(five)).thenReturn(5);
 	}
 	
+
+	@Test
+	public void emptyBest() {
+		selector.setPopulationSize(1);
+		Individual<String> best = selector.best(new HashSet<Individual<String>>());
+		
+		assertNull("Best of an empty set is NULL!", best);
+	}
+
+	
+	@Test
+	public void oneBest() {
+		selector.setPopulationSize(1);
+		Set<Individual<String>> set = Collections.singleton(one);
+		Individual<String> result = selector.best(set);
+		
+		assertSame("Best of a set of one is ONE!", one, result);
+	}
+
+
+	@Test
+	public void simpleBest() {
+		Set<Individual<String>> population = new HashSet<Individual<String>>();
+		population.add(one);
+		population.add(two);
+		population.add(three);
+		population.add(four);
+		population.add(five);
+		
+		Individual<String> result = selector.best(population);
+		
+		assertSame("Selecting best failed!", one, result);
+
+	}
+
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void empty() {
@@ -86,6 +122,7 @@ public class FixedSizePopulationSelectorTest {
 		assertEquals("Selection failed!", expected, result);
 
 	}
+
 
 	@Test
 	public void same() {

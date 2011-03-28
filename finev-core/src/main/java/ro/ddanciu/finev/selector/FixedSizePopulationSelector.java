@@ -59,12 +59,12 @@ public class FixedSizePopulationSelector<X extends Comparable<X>, D> implements 
 		Individual<D> best = null;
 		for (Individual<D> individual : population) {
 			X fitness = evaluator.evaluate(individual);
-			if (maxFitness == null || fitness.compareTo(maxFitness) > 0) {
+			if (maxFitness == null || fitness.compareTo(maxFitness) < 0) {
 				maxFitness = fitness;
 				best = individual;
 			}
 		}
-		System.out.println(String.format("Max fitness: %s", maxFitness));
+		System.out.println(String.format("Best fitness: %s", maxFitness));
 		return best;
 	}
 	

@@ -56,7 +56,7 @@
 	
 	<bean name="evaluator" class="ro.ddanciu.jevo.core.Evaluator">
 		<property name="fitnessFunction">
-			<bean class="ro.ddanciu.finev.TriangulationFitness"/>
+			<bean class="ro.ddanciu.finev.fitness.PerimeterTriangulationFitness"/>
 		</property>
 	</bean>
 </beans>
