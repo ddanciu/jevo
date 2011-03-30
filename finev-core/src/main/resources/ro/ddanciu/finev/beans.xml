@@ -10,6 +10,8 @@
 				<prop key="max.generations">100</prop>
 				<prop key="population.size">10</prop>
 				<prop key="crossover.rate">0.3</prop>
+				<prop key="fitness.perfectness.rate">0.5</prop>
+				<prop key="fitness.perimeter.rate">0.5</prop>
 			</props>
 		</property>
 	</bean>
@@ -55,8 +57,19 @@
 	<bean name="decomposition" class="ro.ddanciu.finite.elements.algorithms.CornerFanDecomposition" scope="prototype"/>
 	
 	<bean name="evaluator" class="ro.ddanciu.jevo.core.Evaluator">
-		<property name="fitnessFunction">
-			<bean class="ro.ddanciu.finev.fitness.PerimeterTriangulationFitness"/>
+		<property name="fitnessFunction" ref="cumulativeFitness"/>
+	</bean>
+	
+	
+	<bean name="cumulativeFitness" class="ro.ddanciu.finev.fitness.CumulativeFitness">
+		<property name="config">
+			<map>
+				<entry key-ref="perfectnessFitness" value="${fitness.perfectness.rate}"/>
+				<entry key-ref="perimeterFitness" value="${fitness.perimeter.rate}"/>
+			</map>
 		</property>
 	</bean>
+
+	<bean name="perimeterFitness" class="ro.ddanciu.finev.fitness.PerimeterTriangulationFitness"/>
+	<bean name="perfectnessFitness" class="ro.ddanciu.finev.fitness.PerfectnessTriangulationFitness"/>
 </beans>

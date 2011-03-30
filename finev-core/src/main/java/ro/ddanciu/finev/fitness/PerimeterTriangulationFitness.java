@@ -2,6 +2,7 @@ package ro.ddanciu.finev.fitness;
 
 import static java.math.BigDecimal.ZERO;
 import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static ro.ddanciu.finite.elements.api.utils.TriangleUtils.perimeter;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -20,21 +21,13 @@ public class PerimeterTriangulationFitness implements FitnessFunction<BigDecimal
 		Set<Triangle> data = individual.getData();
 		BigDecimal total = ZERO;
 		for (Triangle t : data) {
-			BigDecimal x = eval(t);
+			BigDecimal x = perimeter(t);
 			total = total.add(x, MY_CNTX);
 		}
 		
 		return total;
 	}
 	
-	public BigDecimal eval(Triangle t) {
-
-		BigDecimal a = t.getE1().length();
-		BigDecimal b = t.getE2().length();
-		BigDecimal c = t.getE3().length();
-		
-		BigDecimal x = a.add(b, MY_CNTX).add(c, MY_CNTX);
-		return x;
-	}
+	
 
 }

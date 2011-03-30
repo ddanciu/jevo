@@ -13,7 +13,7 @@ import ro.ddanciu.jevo.core.Individual;
 /**
  * @author dan
  */
-public class SummingTriangulationFitness implements FitnessFunction<BigDecimal, Set<Triangle>> {
+public class PerfectnessTriangulationFitness implements FitnessFunction<BigDecimal, Set<Triangle>> {
 
 	private static final BigDecimal TWO = new BigDecimal(2);
 
