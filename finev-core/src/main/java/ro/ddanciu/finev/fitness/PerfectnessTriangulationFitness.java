@@ -2,10 +2,14 @@ package ro.ddanciu.finev.fitness;
 
 import static java.math.BigDecimal.ZERO;
 import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
+import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Set;
 
+import ro.ddanciu.finite.elements.api.Constants;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.jevo.core.FitnessFunction;
 import ro.ddanciu.jevo.core.Individual;
@@ -44,7 +48,8 @@ public class PerfectnessTriangulationFitness implements FitnessFunction<BigDecim
 		BigDecimal t3 = a.add(b, MY_CNTX).subtract(c, MY_CNTX);
 		BigDecimal y = t1.multiply(t2, MY_CNTX).multiply(t3, MY_CNTX);
 		
-		return x.divide(y, MY_CNTX);
+		return x.divide(y, MathContext.DECIMAL32)
+				.setScale(MY_SCALE, MY_RND);
 	}
 
 }
