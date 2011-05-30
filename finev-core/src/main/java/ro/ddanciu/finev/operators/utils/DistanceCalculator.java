@@ -6,6 +6,6 @@ import ro.ddanciu.finite.elements.api.Point;
 
 public interface DistanceCalculator {
 
-	public abstract BigDecimal compute(Point x);
+	BigDecimal compute(Point x);
 
 }

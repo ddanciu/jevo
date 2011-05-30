@@ -29,7 +29,12 @@ public class DistanceCalculatorImpl implements DistanceCalculator {
 		
 		BigDecimal avg = averageDistance(x);
 		maxUntilNow = maxUntilNow.max(avg);
-		BigDecimal norm = avg.divide(maxUntilNow, MathContext.DECIMAL32);
+		BigDecimal norm;
+		if (maxUntilNow.compareTo(BigDecimal.ZERO) != 0) {
+			norm = avg.divide(maxUntilNow, MathContext.DECIMAL128);
+		} else {
+			norm = BigDecimal.ONE;
+		}
 		return norm.round(MY_CNTX);
 		
 	}
@@ -37,9 +42,10 @@ public class DistanceCalculatorImpl implements DistanceCalculator {
 	private BigDecimal averageDistance(Point x) {
 		BigDecimal sum = BigDecimal.ZERO;
 		for (Point reference : references) {
-			sum.add(reference.distance(x), MathContext.DECIMAL32);
+			BigDecimal distance = reference.distance(x);
+			sum = sum.add(distance, MathContext.DECIMAL128);
 		}
-		BigDecimal avg = sum.divide(new BigDecimal(references.size()), MathContext.DECIMAL32);
+		BigDecimal avg = sum.divide(new BigDecimal(references.size()), MathContext.DECIMAL128);
 		return avg;
 	}
 
