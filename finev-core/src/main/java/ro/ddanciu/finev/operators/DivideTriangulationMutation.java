@@ -33,18 +33,18 @@ public class DivideTriangulationMutation extends AbstractTriangulationMutation<S
 	}
 
 	@Override
-	protected boolean operateInternal(Set<Triangle> triangles) {
+	public boolean operateInternal(Set<Triangle> triangles) {
 		
 		Triangle winner = random.choice(triangles);
-		Point circumcenter = TriangleUtils.circumcenter(winner);
+		Point incenter = TriangleUtils.incenter(winner);
 		
-		BigDecimal distance = distanceCalculator.compute(circumcenter);
+		BigDecimal distance = distanceCalculator.compute(incenter);
 		
 		if (rate < distance.floatValue()) {
 			return false;
 		}
 		
-		divideByPoint(winner, circumcenter, triangles);
+		divideByPoint(winner, incenter, triangles);
 		return true;
 	}
 

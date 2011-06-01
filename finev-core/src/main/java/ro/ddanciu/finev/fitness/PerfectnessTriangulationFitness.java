@@ -48,7 +48,7 @@ public class PerfectnessTriangulationFitness implements FitnessFunction<BigDecim
 		BigDecimal t3 = a.add(b, MY_CNTX).subtract(c, MY_CNTX);
 		BigDecimal y = t1.multiply(t2, MY_CNTX).multiply(t3, MY_CNTX);
 		
-		return x.divide(y, MathContext.DECIMAL32)
+		return x.divide(y, MathContext.DECIMAL128)
 				.setScale(MY_SCALE, MY_RND);
 	}
 
