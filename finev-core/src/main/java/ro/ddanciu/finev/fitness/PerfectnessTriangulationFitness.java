@@ -1,15 +1,13 @@
 package ro.ddanciu.finev.fitness;
 
 import static java.math.BigDecimal.ZERO;
-import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static java.math.MathContext.DECIMAL128;
 import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
 import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Set;
 
-import ro.ddanciu.finite.elements.api.Constants;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.jevo.core.FitnessFunction;
 import ro.ddanciu.jevo.core.Individual;
@@ -41,15 +39,16 @@ public class PerfectnessTriangulationFitness implements FitnessFunction<BigDecim
 		BigDecimal b = t.getE2().length();
 		BigDecimal c = t.getE3().length();
 		
-		BigDecimal x = TWO.multiply(a, MY_CNTX).multiply(b, MY_CNTX).multiply(c, MY_CNTX);
+		BigDecimal x = TWO.multiply(a, DECIMAL128).multiply(b, DECIMAL128).multiply(c, DECIMAL128);
 		
-		BigDecimal t1 = b.add(c, MY_CNTX).subtract(a, MY_CNTX);
-		BigDecimal t2 = c.add(a, MY_CNTX).subtract(b, MY_CNTX);
-		BigDecimal t3 = a.add(b, MY_CNTX).subtract(c, MY_CNTX);
-		BigDecimal y = t1.multiply(t2, MY_CNTX).multiply(t3, MY_CNTX);
+		BigDecimal t1 = b.add(c, DECIMAL128).subtract(a, DECIMAL128);
+		BigDecimal t2 = c.add(a, DECIMAL128).subtract(b, DECIMAL128);
+		BigDecimal t3 = a.add(b, DECIMAL128).subtract(c, DECIMAL128);
+		BigDecimal y = t1.multiply(t2, DECIMAL128).multiply(t3, DECIMAL128);
 		
-		return x.divide(y, MathContext.DECIMAL128)
-				.setScale(MY_SCALE, MY_RND);
+		BigDecimal rez = x.divide(y, DECIMAL128);
+		rez = rez.setScale(MY_SCALE, MY_RND);
+		return rez;
 	}
 
 }

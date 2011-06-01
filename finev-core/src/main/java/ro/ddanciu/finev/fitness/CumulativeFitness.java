@@ -1,7 +1,9 @@
 package ro.ddanciu.finev.fitness;
 
 import static java.math.BigDecimal.ZERO;
-import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static java.math.MathContext.DECIMAL128;
+import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
+import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -28,11 +30,11 @@ public class CumulativeFitness<T> implements FitnessFunction<BigDecimal, T> {
 			BigDecimal partial = entry.getKey().eval(individual);
 			BigDecimal weigth = new BigDecimal(Double.toString(entry.getValue()));
 			
-			BigDecimal x = partial.multiply(weigth, MY_CNTX);
+			BigDecimal x = partial.multiply(weigth, DECIMAL128);
 			
-			value = value.add(x, MY_CNTX);
+			value = value.add(x, DECIMAL128);
 		}
-
+		value.setScale(MY_SCALE, MY_RND);
 		return value;
 	}
 

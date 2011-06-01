@@ -18,6 +18,7 @@ import ro.ddanciu.finite.elements.api.Point;
 
 public class DistanceCalculatorTest {
 	
+	private static final BigDecimal MY_ONE = BigDecimal.ONE.setScale(MY_SCALE, MY_RND);
 	private DistanceCalculator calculator;
 	private Set<Point> references;
 	
@@ -37,13 +38,14 @@ public class DistanceCalculatorTest {
 		BigDecimal norm;
 		
 		norm = calculator.compute(new Point(0, 0));
-		assertEquals("Distance from (0, 0) to (0, 0) normalized is 1.", BigDecimal.ONE, norm);
+		assertEquals("Distance from (0, 0) to (0, 0) normalized is 1.", MY_ONE, norm);
 
 		norm = calculator.compute(new Point(2, 0));
-		assertEquals("Distance from (0, 0) to (2, 0) normalized is 1.", BigDecimal.ONE, norm);
+		assertEquals("Distance from (0, 0) to (2, 0) normalized is 1.", MY_ONE, norm);
 
 		norm = calculator.compute(new Point(1, 0));
-		assertEquals("Distance from (0, 0) to (1, 0) normalized is 0.5.", new BigDecimal("0.5"), norm);
+		assertEquals("Distance from (0, 0) to (1, 0) normalized is 0.5.", 
+				new BigDecimal("0.5").setScale(MY_SCALE, MY_RND), norm);
 	}
 
 	@Test
@@ -53,13 +55,13 @@ public class DistanceCalculatorTest {
 		BigDecimal norm;
 		
 		norm = calculator.compute(new Point(1, 0));
-		assertEquals("Distance from [(0, 0), (2, 0)] to (0, 0) normalized is 1.", BigDecimal.ONE, norm);
+		assertEquals("Distance from [(0, 0), (2, 0)] to (0, 0) normalized is 1.", MY_ONE, norm);
 
 		norm = calculator.compute(new Point(0, 2));
-		assertEquals("Distance from [(0, 0), (2, 0)] to (0, 2) normalized is 1.", BigDecimal.ONE, norm);
+		assertEquals("Distance from [(0, 0), (2, 0)] to (0, 2) normalized is 1.", MY_ONE, norm);
 
 		norm = calculator.compute(new Point(2, 2));
-		assertEquals("Distance from [(0, 0), (2, 0)] to (0, 2) normalized is 1.", BigDecimal.ONE, norm);
+		assertEquals("Distance from [(0, 0), (2, 0)] to (0, 2) normalized is 1.", MY_ONE, norm);
 
 		norm = calculator.compute(new Point(1, 2));
 		double expected = sqrt(5)/(1 + sqrt(2));

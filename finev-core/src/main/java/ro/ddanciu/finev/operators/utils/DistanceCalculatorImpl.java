@@ -1,9 +1,10 @@
 package ro.ddanciu.finev.operators.utils;
 
-import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static java.math.MathContext.DECIMAL128;
+import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
+import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Required;
@@ -31,11 +32,11 @@ public class DistanceCalculatorImpl implements DistanceCalculator {
 		maxUntilNow = maxUntilNow.max(avg);
 		BigDecimal norm;
 		if (maxUntilNow.compareTo(BigDecimal.ZERO) != 0) {
-			norm = avg.divide(maxUntilNow, MathContext.DECIMAL128);
+			norm = avg.divide(maxUntilNow, DECIMAL128);
 		} else {
 			norm = BigDecimal.ONE;
 		}
-		return norm.round(MY_CNTX);
+		return norm.setScale(MY_SCALE, MY_RND);
 		
 	}
 
@@ -43,9 +44,9 @@ public class DistanceCalculatorImpl implements DistanceCalculator {
 		BigDecimal sum = BigDecimal.ZERO;
 		for (Point reference : references) {
 			BigDecimal distance = reference.distance(x);
-			sum = sum.add(distance, MathContext.DECIMAL128);
+			sum = sum.add(distance, DECIMAL128);
 		}
-		BigDecimal avg = sum.divide(new BigDecimal(references.size()), MathContext.DECIMAL128);
+		BigDecimal avg = sum.divide(new BigDecimal(references.size()), DECIMAL128);
 		return avg;
 	}
 

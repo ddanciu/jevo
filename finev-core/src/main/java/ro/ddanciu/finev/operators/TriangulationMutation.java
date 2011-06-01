@@ -1,7 +1,9 @@
 package ro.ddanciu.finev.operators;
 
 import static java.lang.String.format;
-import static ro.ddanciu.finite.elements.api.Constants.MY_CNTX;
+import static java.math.MathContext.DECIMAL128;
+import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
+import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 import static ro.ddanciu.finite.elements.api.utils.TriangleUtils.area;
 
 import java.math.BigDecimal;
@@ -67,8 +69,8 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 			t2 = new Triangle(otherOfB, common.getP2(), otherOfA);
 		}
 
-		BigDecimal oldArea = area(a).add(area(b), MY_CNTX);
-		BigDecimal newArea = area(t1).add(area(t2), MY_CNTX);
+		BigDecimal oldArea = area(a).add(area(b), DECIMAL128).setScale(MY_SCALE, MY_RND);
+		BigDecimal newArea = area(t1).add(area(t2), DECIMAL128).setScale(MY_SCALE, MY_RND);
 		
 		if ( oldArea.compareTo(newArea) == 0) {
 			triangles.remove(a);

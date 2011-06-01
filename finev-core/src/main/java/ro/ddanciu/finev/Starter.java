@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.PoliLine;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.finite.elements.api.readers.ElementsReader;
@@ -18,12 +19,14 @@ import ro.ddanciu.jevo.core.Individual;
 public class Starter {
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		
+
 		PoliLine original = null;
-		if (args.length > 0) {
+		Collection<Point> references = null;
+		if (args.length == 2) {
 			original = new ElementsReader(new FileInputStream(args[0])).readPoliLine();
+			references = new ElementsReader(new FileInputStream(args[1])).readPoints();
 		} else {
-			System.out.println("No input file! Please specify one as command line argument!");
+			System.out.println("No correct arguments! Please specify one as command line arguments!");
 			System.exit(1);
 		}
 
@@ -37,6 +40,9 @@ public class Starter {
 		for (Set<Triangle> o : options) {
 			initialPopulation.add(Individual.Factory.newInstance(o));
 		}
+		
+		Set<Point> distanceReferences = (Set<Point>) context.getBean("distanceReferences", Set.class);
+		distanceReferences.addAll(references);
 		
 		Individual<Set<Triangle>> winner = algorithm.run(initialPopulation);
 		
