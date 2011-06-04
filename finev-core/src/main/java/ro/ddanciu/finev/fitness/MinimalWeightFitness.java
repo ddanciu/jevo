@@ -4,7 +4,6 @@ import static java.math.BigDecimal.ZERO;
 import static java.math.MathContext.DECIMAL128;
 import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
 import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
-import static ro.ddanciu.finite.elements.api.utils.TriangleUtils.perimeter;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -16,14 +15,14 @@ import ro.ddanciu.jevo.core.Individual;
 /**
  * @author dan
  */
-public class PerimeterTriangulationFitness implements FitnessFunction<BigDecimal, Set<Triangle>> {
+public class MinimalWeightFitness implements FitnessFunction<BigDecimal, Set<Triangle>> {
 
 	@Override
 	public BigDecimal eval(Individual<Set<Triangle>> individual) {
 		Set<Triangle> data = individual.getData();
 		BigDecimal total = ZERO;
 		for (Triangle t : data) {
-			BigDecimal x = perimeter(t);
+			BigDecimal x = t.perimeter();
 			total = total.add(x, DECIMAL128);
 		}
 		

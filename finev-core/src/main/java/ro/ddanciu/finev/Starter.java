@@ -18,6 +18,7 @@ import ro.ddanciu.jevo.core.Individual;
 
 public class Starter {
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws FileNotFoundException {
 
 		PoliLine original = null;

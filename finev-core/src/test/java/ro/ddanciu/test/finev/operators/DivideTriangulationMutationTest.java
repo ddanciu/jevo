@@ -1,7 +1,6 @@
 package ro.ddanciu.test.finev.operators;
 
 import static java.lang.String.format;
-import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -9,23 +8,17 @@ import static org.mockito.Mockito.when;
 import static ro.ddanciu.finite.elements.api.utils.TriangleUtils.counterClockwise;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-
-import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import ro.ddanciu.finev.operators.DivideTriangulationMutation;
 import ro.ddanciu.finev.operators.utils.DistanceCalculator;
 import ro.ddanciu.finev.operators.utils.Random;
 import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.Triangle;
-import ro.ddanciu.finite.elements.api.utils.TriangleUtils;
 
 public class DivideTriangulationMutationTest {
 	
@@ -56,7 +49,7 @@ public class DivideTriangulationMutationTest {
 		triangles.add(otherTriangle);
 		
 		when(random.choice(triangles)).thenReturn(triangle);
-		when(distanceCalculator.compute(TriangleUtils.incenter(triangle))).thenReturn(new BigDecimal("0.6"));
+		when(distanceCalculator.compute(triangle.incenter())).thenReturn(new BigDecimal("0.6"));
 		
 		boolean done = mutation.operateInternal(triangles);
 		
@@ -76,7 +69,7 @@ public class DivideTriangulationMutationTest {
 		triangles.add(otherTriangle);
 		
 		when(random.choice(triangles)).thenReturn(triangle);
-		when(distanceCalculator.compute(TriangleUtils.incenter(triangle))).thenReturn(new BigDecimal("0.3"));
+		when(distanceCalculator.compute(triangle.incenter())).thenReturn(new BigDecimal("0.3"));
 		
 		boolean done = mutation.operateInternal(triangles);
 		

@@ -42,7 +42,8 @@ public class EvoAlgorithmTest {
     private Stopper<Object> stopper;
     private FitnessFunction<Integer, Object> fitnessFunction;
 
-    @Before
+    @SuppressWarnings("unchecked")
+	@Before
     public void init() {
 
         selector = mock(Selector.class);
@@ -64,7 +65,8 @@ public class EvoAlgorithmTest {
 
     }
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void basic() {
         Set<Individual<Object>> initial = new HashSet<Individual<Object>>();
         Individual<Object> i1 = Individual.Factory.newInstance(new Object());
@@ -102,7 +104,8 @@ public class EvoAlgorithmTest {
         Assert.assertEquals("Winner not what expected!", i3, individual);
     }
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void stopByStopper() {
         Set<Individual<Object>> initial = new HashSet<Individual<Object>>();
         Individual<Object> i1 = Individual.Factory.newInstance(new Object());

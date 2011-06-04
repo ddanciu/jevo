@@ -9,7 +9,6 @@ import ro.ddanciu.finev.operators.utils.DistanceCalculator;
 import ro.ddanciu.finev.operators.utils.Random;
 import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.Triangle;
-import ro.ddanciu.finite.elements.api.utils.TriangleUtils;
 import ro.ddanciu.jevo.core.operators.AbstractTriangulationMutation;
 
 public class DivideTriangulationMutation extends AbstractTriangulationMutation<Set<Triangle>> {
@@ -36,7 +35,7 @@ public class DivideTriangulationMutation extends AbstractTriangulationMutation<S
 	public boolean operateInternal(Set<Triangle> triangles) {
 		
 		Triangle winner = random.choice(triangles);
-		Point incenter = TriangleUtils.incenter(winner);
+		Point incenter = winner.incenter();
 		
 		BigDecimal distance = distanceCalculator.compute(incenter);
 		

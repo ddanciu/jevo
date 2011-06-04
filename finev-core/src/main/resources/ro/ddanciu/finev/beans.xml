@@ -87,8 +87,7 @@
 		</property>
 	</bean>
 
-	<bean name="perimeterFitness" class="ro.ddanciu.finev.fitness.PerimeterTriangulationFitness"/>
-	<bean name="perfectnessFitness" class="ro.ddanciu.finev.fitness.PerfectnessTriangulationFitness"/>
+	<bean name="perimeterFitness" class="ro.ddanciu.finev.fitness.MinimalWeightFitnessn name="perfectnessFitness" class="ro.ddanciu.finev.fitness.PerfectnessTriangulationFitness"/>
 	
 	<bean name="distanceReferences" class="java.util.HashSet"/>
 </beans>
