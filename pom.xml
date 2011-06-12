@@ -14,7 +14,7 @@
     <modules>
         <module>jevo-core</module>
         <module>finev-core</module>
-        <module>finev-io</module>
+        <module>finev-io-api</module>
     </modules>
 
     <properties>
