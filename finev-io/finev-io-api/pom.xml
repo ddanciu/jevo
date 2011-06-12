@@ -4,12 +4,12 @@
 
     <parent>
         <groupId>ro.ddanciu.jevo</groupId>
-        <artifactId>jevo</artifactId>
+        <artifactId>jevo-io</artifactId>
         <version>0.1</version>
     </parent>
 
     <groupId>ro.ddanciu.jevo</groupId>
-    <artifactId>finev-io</artifactId>
+    <artifactId>finev-io-api</artifactId>
     <version>0.1</version>
     <packaging>jar</packaging>
 
