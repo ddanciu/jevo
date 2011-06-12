@@ -18,6 +18,7 @@
   
     <modules>
         <module>finev-io-api</module>
+        <module>finev-io-gmsh</module>
     </modules>
 
 </project>
