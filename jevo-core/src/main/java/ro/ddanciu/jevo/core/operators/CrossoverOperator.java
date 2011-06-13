@@ -5,8 +5,8 @@
 
 package ro.ddanciu.jevo.core.operators;
 
-import java.util.Iterator;
 import java.util.Set;
+
 import ro.ddanciu.jevo.core.Individual;
 
 /**
@@ -15,6 +15,6 @@ import ro.ddanciu.jevo.core.Individual;
  */
 public interface CrossoverOperator<I> {
 
-    Set<Individual<I>> operate(Iterator<Individual<I>> it);
+    Set<Individual<I>> operate(Individual<I> x, Individual<I> y);
 
 }

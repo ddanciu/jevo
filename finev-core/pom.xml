@@ -40,6 +40,11 @@
     		<type>jar</type>
     		<scope>compile</scope>
     	</dependency>
+    	<dependency>
+    		<groupId>ro.ddanciu.jevo</groupId>
+    		<artifactId>finev-io-lisa</artifactId>
+    		<version>0.1</version>
+    	</dependency>
     </dependencies>
 
 </project>

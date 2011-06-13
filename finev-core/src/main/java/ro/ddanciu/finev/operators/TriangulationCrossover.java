@@ -5,12 +5,12 @@ import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.gatherInte
 import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.mapping;
 import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.minimumCommonPoliLine;
 
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 import ro.ddanciu.finev.operators.utils.Random;
 import ro.ddanciu.finite.elements.api.Triangle;
@@ -19,23 +19,8 @@ import ro.ddanciu.jevo.core.operators.AbstractCrossoverOperator;
 
 public class TriangulationCrossover extends AbstractCrossoverOperator<Set<Triangle>> {
 	
-	private Random random;
-
-	public void setRandom(Random randomGenerator) {
-		this.random = randomGenerator;
-	}
-
 	@Override
-	protected Set<Set<Triangle>> operateInternal(Iterator<Set<Triangle>> it) {
-		if (! it.hasNext()) {
-			return new HashSet<Set<Triangle>>();
-		}
-		Set<Triangle> mom = it.next();
-		if (! it.hasNext()) {
-			return Collections.singleton(mom);
-		}
-		
-		Set<Triangle> dad = it.next();
+	protected Set<Set<Triangle>> operateInternal(Set<Triangle> mom, Set<Triangle> dad) {
 
 		Map<Vector, List<Vector>> momsMapping = mapping(mom);
 		Map<Vector, List<Vector>> dadsMapping = mapping(dad);
@@ -48,45 +33,44 @@ public class TriangulationCrossover extends AbstractCrossoverOperator<Set<Triang
 		
 		Set<Vector> minimum = null;
 		Vector winner = null;
-		try {
-
-			if (!onlyMoms.isEmpty()) {
-				winner = random.choice(onlyMoms);
-				if (winner != null) {
-					minimum = minimumCommonPoliLine(momsMapping, dadsMapping, winner);
-				} else {
-					minimum = null;
-				}
-			}
-	
-			if (minimum == null) {
-				Set<Set<Triangle>> parents = new HashSet<Set<Triangle>>();
-				parents.add(mom);
-				parents.add(dad);
-				return parents;
-			}
+		Stack<Vector> onlyMomsStack = new Stack<Vector>();
+		onlyMomsStack.addAll(onlyMoms);
+		
+		while (! onlyMomsStack.isEmpty()) {
+			winner = onlyMomsStack.pop();
+			minimum = minimumCommonPoliLine(momsMapping, dadsMapping, winner);
 			
-		} catch (RuntimeException e) {
-			e.printStackTrace();
-			System.out.println(String.format("Mom: %s", mom));
-			System.out.println(String.format("Dad: %s", dad));
-			System.out.println(String.format("Common: %s", winner));
-			throw e;
+			if (minimum != null) {
+				Collection<Triangle> e1;
+				Collection<Triangle> e2;
+				
+				if ((e1 = gatherExterior(dadsMapping, minimum)).isEmpty() 
+						|| (e2 = gatherExterior(momsMapping, minimum)).isEmpty()) {
+					continue;
+				}
+				
+				Collection<Triangle> i1 = gatherInterior(momsMapping, minimum);
+				Collection<Triangle> i2 = gatherInterior(dadsMapping, minimum);
+				
+				Set<Triangle> child1 = new HashSet<Triangle>();
+				child1.addAll(i1);
+				child1.addAll(e1);
+				
+				Set<Triangle> child2 = new HashSet<Triangle>();
+				child2.addAll(i2);
+				child2.addAll(e2);
+				
+				Set<Set<Triangle>> offsprings = new HashSet<Set<Triangle>>();
+				offsprings.add(child1);
+				offsprings.add(child2);
+				
+				System.out.println(">< Crossover occurred!!");
+				return offsprings;
+			}
 		}
 
-		Set<Triangle> child1 = new HashSet<Triangle>();
-		child1.addAll(gatherInterior(momsMapping, minimum));
-		child1.addAll(gatherExterior(dadsMapping, minimum));
 		
-		Set<Triangle> child2 = new HashSet<Triangle>();
-		child2.addAll(gatherInterior(dadsMapping, minimum));
-		child2.addAll(gatherExterior(momsMapping, minimum));
-		
-		Set<Set<Triangle>> offsprings = new HashSet<Set<Triangle>>();
-		offsprings.add(child1);
-		offsprings.add(child2);
-		
-		return offsprings;
+		return null;
 	}
 
 

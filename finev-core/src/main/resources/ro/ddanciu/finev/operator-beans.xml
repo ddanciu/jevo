@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean name="multipleOperatorsMutation" class="ro.ddanciu.finev.operators.MultipleOperatorsMutation"> 
+		<property name="operators">
+			<list>
+				<bean class="ro.ddanciu.finev.operators.TriangulationMutation">
+					<property name="random" ref="random"/>
+					<property name="rate" value="${mutation.rate}"/>
+				</bean>
+				<bean class="ro.ddanciu.finev.operators.DivideTriangulationMutation">
+					<property name="random" ref="random"/>
+					<property name="rate" value="${distance.rate}"/>
+					<property name="distanceCalculator" ref="distanceCalculator"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean name="triangulationCrossover" class="ro.ddanciu.finev.operators.TriangulationCrossover"/>
+
+</beans>

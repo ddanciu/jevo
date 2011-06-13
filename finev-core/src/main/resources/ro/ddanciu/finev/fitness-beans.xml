@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean name="minimalRatedWeightFitness" class="ro.ddanciu.finev.fitness.MinimalRatedWeightFitness">
+		<property name="distanceCalculator" ref="distanceCalculator"/>
+		<property name="rate" >
+			<bean class="java.math.BigDecimal">
+				<constructor-arg value="${minimalRatedWeightFitness.rate}" />
+			</bean>
+		</property>
+	</bean>
+
+	
+	<bean name="cumulativeFitness" class="ro.ddanciu.finev.fitness.CumulativeFitness">
+		<property name="config">
+			<map>
+				<entry key-ref="perfectnessFitness" value="${fitness.perfectness.rate}"/>
+				<entry key-ref="minimalRatedWeightFitness" value="${fitness.perimeter.rate}"/>
+			</map>
+		</property>
+	</bean>
+
+    <bean name="perfectnessFitness" class="ro.ddanciu.finev.fitness.PerfectnessTriangulationFitness"/>
+	<bean name="perimeterFitness" class="ro.ddanciu.finev.fitness.MinimalWeightFitness" /> 
+	
+
+</beans>

@@ -91,7 +91,7 @@ public class LisaFile {
 			ps.println(format("<elem eid=\"%d\" shape=\"%s\" nodes=\"%s\" />", id, type, nodes));
 		}
 		
-		ps.println("<elset>");
+		ps.println("</elset>");
 		ps.println("</liml>");
 	}
 

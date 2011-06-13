@@ -18,6 +18,7 @@ public final class MultipleOperatorsMutation<I> implements MutationOperator<I> {
 	public final boolean operate(Individual<I> individual) {
 		for (MutationOperator<I> operator : operators) {
 			if (operator.operate(individual)) {
+				System.out.println("++ Mutation occurred!");
 				return true;
 			}
 		}

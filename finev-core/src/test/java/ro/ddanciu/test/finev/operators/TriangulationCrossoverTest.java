@@ -1,37 +1,27 @@
 package ro.ddanciu.test.finev.operators;
 
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
-import static org.mockito.Matchers.anySet;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import ro.ddanciu.finev.operators.TriangulationCrossover;
-import ro.ddanciu.finev.operators.utils.Random;
 import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.Triangle;
-import ro.ddanciu.finite.elements.api.Vector;
 import ro.ddanciu.jevo.core.Individual;
 
 public class TriangulationCrossoverTest {
 	
 	private TriangulationCrossover operator;
-	private Random randomGenerator;
 	
 	@Before
 	public void init() {
-		randomGenerator = mock(Random.class);
-
 		operator = new TriangulationCrossover();
-		operator.setRandom(randomGenerator);
 	}
 	
 	@Test
@@ -45,12 +35,9 @@ public class TriangulationCrossoverTest {
 		Set<Triangle> origin2 = new HashSet<Triangle>();
 		origin2.add(t2);
 
-		Vector winner = new Vector(new Point(0, 1), new Point(1, 0));
-		Set<Set<Triangle>> actual = run(origin1, origin2, winner);
+		Set<Set<Triangle>> actual = run(origin1, origin2);
 		
-		assertEquals("Wrong number!", 2, actual.size());
-		assertTrue("First triangle missing!", actual.contains(origin1));
-		assertTrue("Second triangle missing!", actual.contains(origin2));
+		assertNull("Disjunct crossover failed!!", actual);
 		
 	}
 	
@@ -86,36 +73,13 @@ public class TriangulationCrossoverTest {
 		expected2.add(t23);
 				
 		
-		Vector[] winners = new Vector[] {
-				new Vector(new Point(0, 1), new Point(1, 0)),
-				new Vector(new Point(1, 0), new Point(0, 1))
-		};
-		
-		
-		for (Vector winner : winners) {
 
-			Set<Set<Triangle>> actual = run(origin1, origin2, winner);
-			assertEquals("Wrong number!", 2, actual.size());
-			
-			assertTrue("Bad mapping on crossover!", actual.contains(expected1));
-			assertTrue("Bad mapping on crossover!", actual.contains(expected2));
-		}
+		Set<Set<Triangle>> actual = run(origin1, origin2);
+		assertEquals("Wrong number!", 2, actual.size());
 		
-
-		Vector[] loosers = new Vector[] {
-				new Vector(new Point(0, 2), new Point(1, 1)),
-				new Vector(new Point(0, 1), new Point(0, 2))
-		};
+		assertTrue("Bad mapping on crossover!", actual.contains(expected1));
+		assertTrue("Bad mapping on crossover!", actual.contains(expected2));
 		
-		for (Vector looser : loosers) {
-
-			Set<Set<Triangle>> actual = run(origin1, origin2, looser);
-			assertEquals("Wrong number!", 2, actual.size());
-			
-			assertTrue("Origin1 lost!", actual.contains(origin1));
-			assertTrue("Origin2 lost!", actual.contains(origin2));
-		
-		}		
 	}
 	
 	
@@ -159,15 +123,9 @@ public class TriangulationCrossoverTest {
 		expected1.add(expected11);
 		expected1.add(expected12);
 
-		for (Vector x : new Vector[] {
-				new Vector(new Point(2, 6), new Point(4, 1)),
-				new Vector(new Point(4, 1), new Point(2, 6)),
-				new Vector(new Point(2, 6), new Point(6, 2)),
-				new Vector(new Point(6, 2), new Point(2, 6))}) {
-			
-			Set<Set<Triangle>> actual = run(origin1, origin2, x);
-			assertEquals("Crossover failed!", expected1, actual);
-		}
+		
+		Set<Set<Triangle>> actual = run(origin1, origin2);
+		assertEquals("Crossover failed!", expected1, actual);
 		
 		
 		Set<Triangle> expected21 = new HashSet<Triangle>();
@@ -191,13 +149,8 @@ public class TriangulationCrossoverTest {
 		expected2.add(expected21);
 		expected2.add(expected22);
 
-		for (Vector x : new Vector[] {
-				new Vector(new Point(2, 6), new Point(1, 0)),
-				new Vector(new Point(1, 0), new Point(2, 6))}) {
-			
-			Set<Set<Triangle>> actual = run(origin1, origin2, x);
-			assertEquals("Crossover failed!", expected2, actual);
-		}
+		actual = run(origin1, origin2);
+		assertEquals("Crossover failed!", expected2, actual);
 		
 	}
 
@@ -218,15 +171,9 @@ public class TriangulationCrossoverTest {
 		expected.add(origin1);
 		expected.add(origin2);
 
-		for (Vector x : new Vector[] {
-				new Vector(new Point(3, 6), new Point(2, 0)),
-				new Vector(new Point(2, 0), new Point(3, 6)),
-				new Vector(new Point(3, 6), new Point(0, 2)),
-				new Vector(new Point(0, 2), new Point(3, 6))}) {
 			
-			Set<Set<Triangle>> actual = run(origin1, origin2, x);
-			assertEquals("Crossover failed!", expected, actual);
-		}
+		Set<Set<Triangle>> actual = run(origin1, origin2);
+		assertNull("Crossover failed!", actual);
 	}
 	
 
@@ -257,29 +204,21 @@ public class TriangulationCrossoverTest {
 		expected.add(expected1);
 		expected.add(expected2);
 
-		for (Vector x : new Vector[] {
-				new Vector(new Point(3, 6), new Point(0, 2)),
-				new Vector(new Point(0, 2), new Point(3, 6))}) {
-			
-			Set<Set<Triangle>> actual = run(origin1, origin2, x);
-			assertEquals("Crossover failed!", expected, actual);
-		}
+		
+		Set<Set<Triangle>> actual = run(origin1, origin2);
+		assertEquals("Crossover failed!", expected, actual);
 	}
 
-	@SuppressWarnings("unchecked")
-	private Set<Set<Triangle>> run(Set<Triangle> origin1, Set<Triangle> origin2, Vector winner) {
+	private Set<Set<Triangle>> run(Set<Triangle> origin1, Set<Triangle> origin2) {
 		
-		when(randomGenerator.choice(anySet())).thenReturn(winner);
-		
-		List<Individual<Set<Triangle>>> population = new ArrayList<Individual<Set<Triangle>>>();
-		population.add(Individual.Factory.newInstance(origin1)); 
-		population.add(Individual.Factory.newInstance(origin2));
-		
-		Set<Individual<Set<Triangle>>> result = operator.operate(population.iterator());
-		Set<Set<Triangle>> actual = new HashSet<Set<Triangle>>();
-		for (Individual<Set<Triangle>> x : result) {
-			actual.add(x.getData());
+		Set<Individual<Set<Triangle>>> result = operator.operate(Individual.Factory.newInstance(origin1), Individual.Factory.newInstance(origin2));
+		if (result != null) {
+			Set<Set<Triangle>> actual = new HashSet<Set<Triangle>>();
+			for (Individual<Set<Triangle>> x : result) {
+				actual.add(x.getData());
+			}
+			return actual;
 		}
-		return actual;
+		return null;
 	}
 }

@@ -45,7 +45,7 @@ public class EvoAlgorithm<I> {
         Collection<Individual<I>> population = intialPopulation;
         do {
 
-        	System.out.println(format("Generation %d: %s", generation, population));
+        	System.out.println(format("Generation %d ...", generation));
         	
         	population = reproduction(population);
         	population = select(population);
@@ -68,14 +68,20 @@ public class EvoAlgorithm<I> {
     private Set<Individual<I>> crossover(Collection<Individual<I>> parents) {
         
         Set<Individual<I>> next = new HashSet<Individual<I>>(parents);
+        Set<Individual<I>> done = new HashSet<Individual<I>>();
         
-        Iterator<Individual<I>> it = parents.iterator();
-        while (it.hasNext()) {
-            Set<Individual<I>> offsprings = crossoverOperator.operate(it);
-            next.addAll(offsprings);
+        for (Individual<I> x : parents) {
+        	for (Individual<I> y : parents) {
+        		if (!x.equals(y) && !done.contains(y)) {
+        			Set<Individual<I>> offsprings;
+        			if ((offsprings = crossoverOperator.operate(x, y)) != null) {
+        				next.addAll(offsprings);
+        			}
+        		}
+        	}
         }
-
-        return next;
+        
+      return next;
 
     }
 

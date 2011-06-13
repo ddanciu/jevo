@@ -19,6 +19,7 @@
     <modules>
         <module>finev-io-api</module>
         <module>finev-io-gmsh</module>
+        <module>finev-io-lisa</module>
     </modules>
 
 </project>

@@ -43,7 +43,7 @@ public class LisaWriterTest {
 		verify(out).println("<node nid=\"6\" x=\"0.7500\" y=\"0.4330\" />");
 		verify(out).println("<elset name=\"Default Group\" >");
 		verify(out).println("<elem eid=\"1\" shape=\"tri6\" nodes=\"1 2 3 4 5 6\" />");
-		verify(out).println("<elset>");
+		verify(out).println("</elset>");
 		verify(out).println("</liml>");
 
 	}

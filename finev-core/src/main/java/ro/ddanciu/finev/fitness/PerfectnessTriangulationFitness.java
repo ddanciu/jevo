@@ -17,38 +17,30 @@ import ro.ddanciu.jevo.core.Individual;
  */
 public class PerfectnessTriangulationFitness implements FitnessFunction<BigDecimal, Set<Triangle>> {
 
-	private static final BigDecimal TWO = new BigDecimal(2);
-
 	@Override
 	public BigDecimal eval(Individual<Set<Triangle>> individual) {
 		Set<Triangle> data = individual.getData();
-		BigDecimal best = ZERO;
+		BigDecimal sum = ZERO;
 		for (Triangle t : data) {
-			BigDecimal x = eval(t);
-			if (best.compareTo(x) < 0) {
-				best = x;
+			BigDecimal x = t.perfectness();
+			double xd = x.doubleValue();
+			if (xd < 2.1) {
+				// DO NOTHING x = x; 
+			} else if (xd < 2.2) {
+				x = x.multiply(new BigDecimal("5"), DECIMAL128);
+			} else if (xd < 2.3) {
+				x = x.multiply(new BigDecimal("10"), DECIMAL128);
+			} else if (xd < 2.4) {
+				x = x.multiply(new BigDecimal("30"), DECIMAL128);
+			} else {
+				x = x.multiply(new BigDecimal("100"), DECIMAL128);
 			}
+			
+			sum = sum.add(x, DECIMAL128);
 		}
 		
-		return best;
+		return sum.divide(new BigDecimal(data.size()), DECIMAL128);
 	}
 	
-	public BigDecimal eval(Triangle t) {
-
-		BigDecimal a = t.getE1().length();
-		BigDecimal b = t.getE2().length();
-		BigDecimal c = t.getE3().length();
-		
-		BigDecimal x = TWO.multiply(a, DECIMAL128).multiply(b, DECIMAL128).multiply(c, DECIMAL128);
-		
-		BigDecimal t1 = b.add(c, DECIMAL128).subtract(a, DECIMAL128);
-		BigDecimal t2 = c.add(a, DECIMAL128).subtract(b, DECIMAL128);
-		BigDecimal t3 = a.add(b, DECIMAL128).subtract(c, DECIMAL128);
-		BigDecimal y = t1.multiply(t2, DECIMAL128).multiply(t3, DECIMAL128);
-		
-		BigDecimal rez = x.divide(y, DECIMAL128);
-		rez = rez.setScale(MY_SCALE, MY_RND);
-		return rez;
-	}
 
 }

@@ -61,8 +61,8 @@ public class DivideTriangulationMutationTest {
 
 	@Test
 	public void underRate() {
-		Triangle triangle = new Triangle(new Point(0, 1), new Point(0, 0), new Point(1, 0));
-		Triangle otherTriangle = new Triangle(new Point(0, 2), new Point(2, 0), new Point(2, 2));
+		Triangle triangle = new Triangle(new Point(0, 0), new Point(0, 1), new Point(1, 0));
+		Triangle otherTriangle = new Triangle(new Point(0, 2), new Point(2, 2), new Point(2, 0));
 		
 		Set<Triangle> triangles = new HashSet<Triangle>();
 		triangles.add(triangle);
@@ -79,7 +79,7 @@ public class DivideTriangulationMutationTest {
 		
 		for (Triangle t : triangles) {
 			assertTrue(format("Not in counter-clock-wise! %s, %s, %s", t.getP1(), t.getP2(), t.getP3()), 
-					counterClockwise(t.getP1(), t.getP2(), t.getP3()) > 0);
+					counterClockwise(t.getP1(), t.getP2(), t.getP3()) < 0);
 		}
 	}
 

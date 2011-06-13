@@ -6,9 +6,11 @@ import static ro.ddanciu.finite.elements.api.Constants.MY_RND;
 import static ro.ddanciu.finite.elements.api.Constants.MY_SCALE;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Set;
 
 import ro.ddanciu.finev.operators.utils.Random;
+import ro.ddanciu.finite.elements.api.Line;
 import ro.ddanciu.finite.elements.api.Point;
 import ro.ddanciu.finite.elements.api.Segment;
 import ro.ddanciu.finite.elements.api.Triangle;
@@ -32,11 +34,14 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 	@Override
 	protected boolean operateInternal(Set<Triangle> triangles) {
 		
-		if (!random.rate(rate)) {
-			return false;
-		}
 		
 		Triangle winner = random.choice(triangles);
+		
+		float perfectness = new BigDecimal("2").divide(winner.perfectness(), MathContext.DECIMAL128).floatValue();
+		float myRate = Math.max(perfectness, rate);
+		if (!random.rate(myRate)) {
+			return false;
+		}
 		
 		for (Triangle t : triangles) {
 			if (t == winner) {
@@ -44,6 +49,7 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 			}
 			Segment common = TriangleUtils.segmentInCommon(winner, t);
 			if (common != null) { 
+				
 				boolean swapped = swap(triangles, winner, t, common);
 				return swapped;
 			}
@@ -56,6 +62,12 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 
 		Point otherOfA = otherOf(a, common);
 		Point otherOfB = otherOf(b, common);
+		
+		Line ab = Line.defineByPoints(otherOfA, otherOfB);
+		if (ab.distance(common.getP1()).doubleValue() < 0.001
+				|| ab.distance(common.getP2()).doubleValue() < 0.001) {
+			return false;
+		}
 		
 		Triangle t1;
 		Triangle t2;
@@ -77,8 +89,6 @@ public class TriangulationMutation extends AbstractTriangulationMutation<Set<Tri
 			
 			triangles.add(t1);
 			triangles.add(t2);
-			
-			System.out.println(String.format("Mutation: %s and %s", t1, t2));
 			
 			return true;
 		}

@@ -1,6 +1,6 @@
 package ro.ddanciu.finev.operators;
 
-import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.divideByPoint;
+import static ro.ddanciu.finite.elements.api.utils.TriangulationUtils.divideByMedians;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -8,6 +8,7 @@ import java.util.Set;
 import ro.ddanciu.finev.operators.utils.DistanceCalculator;
 import ro.ddanciu.finev.operators.utils.Random;
 import ro.ddanciu.finite.elements.api.Point;
+import ro.ddanciu.finite.elements.api.Segment;
 import ro.ddanciu.finite.elements.api.Triangle;
 import ro.ddanciu.jevo.core.operators.AbstractTriangulationMutation;
 
@@ -35,6 +36,22 @@ public class DivideTriangulationMutation extends AbstractTriangulationMutation<S
 	public boolean operateInternal(Set<Triangle> triangles) {
 		
 		Triangle winner = random.choice(triangles);
+		
+		if (winner.perfectness().doubleValue() > 2.45) {
+			return false;
+		}
+		
+		boolean exit = true;
+		for(Segment s : winner.segments()) {
+			if (s.length().doubleValue() > 0.25) {
+				exit = false;
+			}
+		}
+		
+		if (exit) {
+			return false;
+		}
+		
 		Point incenter = winner.incenter();
 		
 		BigDecimal distance = distanceCalculator.compute(incenter);
@@ -43,7 +60,7 @@ public class DivideTriangulationMutation extends AbstractTriangulationMutation<S
 			return false;
 		}
 		
-		divideByPoint(winner, incenter, triangles);
+		divideByMedians(winner, triangles);
 		return true;
 	}
 

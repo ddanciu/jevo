@@ -7,9 +7,8 @@ package ro.ddanciu.jevo.test.core;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.junit.Assert;
@@ -18,8 +17,8 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import ro.ddanciu.jevo.core.Evaluator;
 
+import ro.ddanciu.jevo.core.Evaluator;
 import ro.ddanciu.jevo.core.EvoAlgorithm;
 import ro.ddanciu.jevo.core.FitnessFunction;
 import ro.ddanciu.jevo.core.Individual;
@@ -80,13 +79,14 @@ public class EvoAlgorithmTest {
         when(selector.choose(initial)).thenReturn(initial);
         when(selector.best(initial)).thenReturn(i3);
 
-        when(crossoverOperator.operate(Matchers.any(Iterator.class)))
+        when(crossoverOperator.operate(Matchers.any(Individual.class), Matchers.any(Individual.class)))
                 .thenAnswer(new Answer<Object>() {
             @Override
             public Object answer(InvocationOnMock invocation) {
                 Object[] args = invocation.getArguments();
-                Iterator<Individual<Object>> it = (Iterator<Individual<Object>>) args[0];
-                return Collections.singleton(it.next()); //copy
+                Individual<Object> x = (Individual<Object>) args[0];
+                Individual<Object> y = (Individual<Object>) args[1];
+                return new HashSet<Object>(Arrays.asList(x, y)); //copy
             }
         });
 
@@ -121,16 +121,16 @@ public class EvoAlgorithmTest {
                 .thenThrow(new RuntimeException("Should not be reached!"));
         when(selector.best(initial)).thenReturn(i3);
 
-        when(crossoverOperator.operate(Matchers.any(Iterator.class)))
-                .thenAnswer(new Answer<Object>() {
-            @Override
-            public Object answer(InvocationOnMock invocation) {
-                Object[] args = invocation.getArguments();
-                Iterator<Individual<Object>> it = (Iterator<Individual<Object>>) args[0];
-                return Collections.singleton(it.next()); //copy
-            }
-        });
-
+        when(crossoverOperator.operate(Matchers.any(Individual.class), Matchers.any(Individual.class)))
+		        .thenAnswer(new Answer<Object>() {
+		    @Override
+		    public Object answer(InvocationOnMock invocation) {
+		        Object[] args = invocation.getArguments();
+		        Individual<Object> x = (Individual<Object>) args[0];
+		        Individual<Object> y = (Individual<Object>) args[1];
+		        return new HashSet<Object>(Arrays.asList(x, y)); //copy
+		    }
+		});
         when(mutationOperator.operate(Matchers.any(Individual.class)))
                 .thenReturn(false);
 
